@@ -1,76 +1,94 @@
-import requests
+from pathlib import Path
+from typing import Any, Dict
+
 import pandas as pd
+from pandas import DataFrame
 
-# Import HDB Resale Price Dataframe
-def get_HDB_resale_dataframe():
-    url = "https://data.gov.sg/api/action/datastore_search"
-    limit = 100
-    offset = 0
-    hdbResale = []
+# Default File Paths
+INPUT_CSV = Path("datasets/Resale.csv")
+OUTPUT_CSV = Path("datasets/Cleaned_Resale_Data.csv")
 
-    # Using API, extract the results of HDB Resale Price Dataset, 100 at a time
-    while True:
-        response = requests.get(
-            url,
-            params={
-                "resource_id": "d_8b84c4ee58e3cfc0ece0d773c8ca6abc",
-                "limit": limit,
-                "offset": offset
-            }
-        )
-        data = response.json()
-        records = data["result"]["records"]
-        hdbResale.extend(data["result"]["records"])
-
-        # Stop if we've reached the end
-        if len(records) < limit:
-            break
-
-        offset += limit
-        print(offset)
-
-    return hdbResale
+# Flat Type Mapping
+FLAT_TYPE_MAP: Dict[str, int] = {
+    "1 ROOM": 0,
+    "2 ROOM": 1,
+    "3 ROOM": 2,
+    "4 ROOM": 3,
+    "5 ROOM": 4,
+    "EXECUTIVE": 5,
+    "MULTI-GENERATION": 6,
+}
 
 # Clean Data
-def cleanData(df):
+
+def clean_data(df: DataFrame) -> DataFrame:
+    """
+    Transforms raw HDB Resale DataFrame into cleaned format.
+
+    Steps:
+      1. Combine 'block' and 'street_name' into 'Address'.
+      2. Extract lower bound of 'storey_range' into 'Storey'.
+      3. Split 'month' into 'Year' and 'Month'.
+      4. Convert 'remaining_lease' into fractional years.
+      5. Map 'flat_type' to ordered integer categories.
+      6. Select and rename relevant columns.
+
+    Args:
+        df: Raw DataFrame containing HDB resale data.
+
+    Returns:
+        Cleaned DataFrame with features:
+        ['Year', 'Month', 'Town', 'Flat_Type', 'Address',
+         'Storey', 'Floor_Area', 'Remaining_Lease', 'Price']
+    """
+    df_clean = df.copy()
+
     # Combine Block and Street Name to get Address
-    df["Address"] = df["block"].astype(str) + " " + df["street_name"].astype(str)
+    df_clean["Address"] = df_clean["block"].astype(str) + " " + df_clean["street_name"].astype(str)
     
     # Take Lower Bound of Storey Range
-    df["Storey"] = pd.to_numeric(df["storey_range"].str[:2], errors="coerce")
+    df_clean["Storey"] = pd.to_numeric(
+        df_clean["storey_range"].str.extract(r"^(\d+)")[0], errors="coerce"
+    )
 
     # Convert 'month' column to Year and Month
-    df["Year"] = pd.to_numeric(df["month"].str[:4], errors="coerce")
-    df["Month"] = pd.to_numeric(df["month"].str[5:], errors="coerce")
-
+    df_clean["Year"] = pd.to_numeric(
+        df_clean["month"].str.slice(0, 4), errors="coerce"
+    )
+    df_clean["Month"] = pd.to_numeric(
+        df_clean["month"].str.slice(5, 7), errors="coerce"
+    
+    )
     # Express Remaining Lease in Years
-    df["Remaining_Lease"] = df["remaining_lease"].apply(
+    df_clean["Remaining_Lease"] = df_clean["remaining_lease"].apply(
         lambda x: round(int(x.split()[0]) + (int(x.split()[2]) if "month" in x else 0)/12, 3)
         )
     
     # Convert Flat Type to Ordered Factor
-    flat_type_map = {
-        "1 ROOM": 0,
-        "2 ROOM": 1,
-        "3 ROOM": 2,
-        "4 ROOM": 3,
-        "5 ROOM": 4,
-        "EXECUTIVE": 5,
-        "MULTI-GENERATION": 6
-    }
-    df["Flat_Type"] = df["flat_type"].map(flat_type_map)
+    df_clean["Flat_Type"] = df_clean["flat_type"].map(FLAT_TYPE_MAP)
     
     # Select Relevant Columns
-    df = df[["Year", "Month", "town", "Flat_Type", "Address", "Storey", "floor_area_sqm", "Remaining_Lease", "resale_price"]]
-    df = df.rename(columns={
+    selected = [
+        "Year", "Month", "town", "Flat_Type", "Address",
+        "Storey", "floor_area_sqm", "Remaining_Lease", "resale_price"
+    ]
+    df_clean = df_clean[selected].rename(columns={
         "town": "Town",
         "floor_area_sqm": "Floor_Area",
         "resale_price": "Price"
     })
 
-    return df
+    return df_clean
+
+def main() -> None:
+    """
+    Read raw data, clean, and save.
+    """
+    if not INPUT_CSV.exists():
+        raise FileNotFoundError(f"Input file not found: {INPUT_CSV}")
+    df_raw = pd.read_csv(INPUT_CSV)
+    df_clean = clean_data(df_raw)
+    df_clean.to_csv(OUTPUT_CSV, index=False)
 
 if __name__ == "__main__":
-    df = pd.read_csv("datasets/Resale.csv")
-    df = cleanData(df)
-    df.to_csv("datasets/Cleaned_Resale_Data.csv", index=False)
+    main()

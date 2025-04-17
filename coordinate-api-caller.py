@@ -1,55 +1,68 @@
+from typing import List, Tuple
 import requests
-import json
 import pandas as pd
 
-# Authenticate OneMaps API
-def authenticate():
-    url = "https://www.onemap.gov.sg/api/auth/post/getToken"
-    payload = {"email": "dillonchong01@gmail.com",
-               "password": "T0126546BClash"
-               }
+# OneMap API Configuration
+EMAIL = "dillonchong01@gmail.com"
+PASSWORD = "T0126546BClash"
+TOKEN_URL = "https://www.onemap.gov.sg/api/auth/post/getToken"
+SEARCH_URL = "https://www.onemap.gov.sg/api/common/elastic/search"
+
+# Authenticate OneMap API
+def authenticate() -> str:
+    """
+    Authenticate with OneMap API and returns access token
+    """
+    payload = {"email": EMAIL, "password": PASSWORD}
     try:
-        response = requests.request("POST", url, json=payload)
+        response = requests.post(TOKEN_URL, json=payload)
         response.raise_for_status()
-        token = response.json().get('access_token')
-        return token
-    except requests.exceptions.RequestException as e:
+        return response.json().get("access_token", None)
+    except requests.RequestException as e:
         print(f"Authentication failed: {e}")
         return None
     
 # Obtain Latitude and Longitude from OneMaps
-def getLatLong(locations):
-    lat_long_df = []
+def get_lat_long(locations: List[str], api_token: str) -> pd.DataFrame:
+    """
+    Given a list of location names, retrieve latitude and longitude from OneMap.
+
+    Args:
+        locations: List of string addresses to geocode.
+        api_token: Auth token for OneMap API.
+
+    Returns:
+        DataFrame with columns ['Address', 'Lat', 'Long'].
+    """
+    lat_long_data: List[Tuple[str, float, float]] = []
+
     # Get Lat - Long for each Unique Address
     for address in locations:
         try:
-            response = requests.get("https://www.onemap.gov.sg/api/common/elastic/search",
-                                    params={"searchVal": address,
-                                            "returnGeom": "Y",
-                                            "getAddrDetails": "N"},
-                                    headers={"Authorization": f"{api_token}"}
-                                    )
+            response = requests.get(
+                SEARCH_URL,
+                params={"searchVal": address, "returnGeom": "Y", "getAddrDetails": "N"},
+                headers={"Authorization": f"{api_token}"}
+            )
             response.raise_for_status()
-            data = json.loads(response.content).get("results", [])
+            results = response.json().get("results", [])
 
-            if data:
-                latitude, longitude = data[0]["LATITUDE"], data[0]["LONGITUDE"]
+            if results:
+                latitude = float(results[0]["LATITUDE"])
+                longitude = float(results[0]["LONGITUDE"])
             else:
-                latitude, longitude = 0, 0
-            
-            lat_long_df.append((address, latitude, longitude))
+                latitude, longitude = 0.0, 0.0
 
         except Exception as e:
             print(f"Request failed for '{address}': {e}")
-            lat_long_df.append((address, 0, 0))
+            latitude, longitude = 0.0, 0.0
+            
+        lat_long_data.append((address, latitude, longitude))
 
-    # Create Dataframe of Address, Lat, Long
-    lat_long_df = pd.DataFrame(lat_long_df, columns=['Address', 'Lat', 'Long'])
-
-    return lat_long_df
+    return pd.DataFrame(lat_long_data, columns=["Address", "Lat", "Long"])
 
 
-stations = [
+STATIONS = [
     "Jurong East MRT", "Bukit Batok MRT", "Bukit Gombak MRT", "Choa Chu Kang MRT", "Yew Tee MRT",
     "Kranji MRT", "Marsiling MRT", "Woodlands MRT", "Admiralty MRT", "Sembawang MRT",
     "Canberra MRT", "Yishun MRT", "Khatib MRT", "Yio Chu Kang MRT", "Ang Mo Kio MRT",
@@ -81,7 +94,7 @@ stations = [
     "Marine Terrace MRT", "Siglap MRT", "Bayshore MRT"
     ]
 
-malls = [
+MALLS = [
     "100 AM", "111 Somerset", "313@Somerset", "AMK Hub", "Anchorpoint",
     "Aperia Mall", "Bedok Mall", "Bugis Junction", "Bugis+", "Bukit Panjang Plaza",
     "Capitol Singapore", "Causeway Point", "Century Square", "Changi City Point", "Chijmes",
@@ -106,7 +119,7 @@ malls = [
     "YewTee Point"
     ]
 
-schools = [
+SCHOOLS = [
     "Admiralty Primary School", "Ai Tong School", "Alexandra Primary School", "Anderson Primary School", "Anglo-Chinese School (Junior)",
     "Anglo-Chinese School (Primary)", "Angsana Primary School", "Bukit Panjang Primary School", "Bukit View Primary School", "Canberra Primary School",
     "Catholic High School", "CHIJ Our Lady of the Nativity", "CHIJ Primary (Toa Payoh)", "CHIJ St. Nicholas Girls' School", "Chongfu School",
@@ -140,21 +153,21 @@ if __name__ == "__main__":
         print("Authentication failed. Exiting...")
         exit(1)
 
-    # df = pd.read_csv("datasets/Cleaned_Resale_Data.csv")
+    df = pd.read_csv("datasets/Cleaned_Resale_Data.csv")
 
-    # # Get Lat/Long of Resale HDB
-    # hdb_locations = df["Address"].unique()
-    # hdb_lat_long_df = getLatLong(hdb_locations)
-    # hdb_lat_long_df.to_csv("datasets/coordinates/HDB_LatLong.csv", index=False)
+    # Get Lat/Long of Resale HDB
+    hdb_locations = df["Address"].unique()
+    hdb_lat_long_df = get_lat_long(hdb_locations, api_token)
+    hdb_lat_long_df.to_csv("datasets/coordinates/HDB_LatLong.csv", index=False)
 
-    # # Get Lat/Long of MRTs
-    # mrt_lat_long_df = getLatLong(stations)
-    # mrt_lat_long_df.to_csv("datasets/coordinates/MRT_LatLong.csv", index=False)
+    # Get Lat/Long of MRTs
+    mrt_lat_long_df = get_lat_long(STATIONS, api_token)
+    mrt_lat_long_df.to_csv("datasets/coordinates/MRT_LatLong.csv", index=False)
 
     # Get Lat/Long of Malls
-    # mall_lat_long_df = getLatLong(malls)
-    # mall_lat_long_df.to_csv("datasets/coordinates/Mall_LatLong.csv", index=False)
+    mall_lat_long_df = get_lat_long(MALLS, api_token)
+    mall_lat_long_df.to_csv("datasets/coordinates/Mall_LatLong.csv", index=False)
 
-    # # Get Lat/Long of Primary Schools (that are oversubscribed)
-    school_lat_long_df = getLatLong(schools)
+    # Get Lat/Long of Primary Schools (that are oversubscribed)
+    school_lat_long_df = get_lat_long(SCHOOLS, api_token)
     school_lat_long_df.to_csv("datasets/coordinates/School_LatLong.csv", index=False)

@@ -1,4 +1,4 @@
-Address,Lat,Long,Nearest MRT,Distance to MRT,Nearest Mall,Distance to Mall,Nearest Pri Sch,Within 1km of Pri
+Address,Lat,Long,Nearest_MRT,Distance_MRT,Nearest_Mall,Distance_Mall,Nearest_Pri_Sch,Within_1km_of_Pri
 406 ANG MO KIO AVE 10,1.362004539,103.8538799,Ang Mo Kio MRT,1148,AMK Hub,1276,Teck Ghee Primary School,TRUE
 108 ANG MO KIO AVE 4,1.370966352,103.8382019,Mayflower MRT,268,Jubilee Square,1612,CHIJ St. Nicholas Girls' School,TRUE
 602 ANG MO KIO AVE 5,1.38070883,103.8353682,Lentor MRT,795,Jubilee Square,2278,Anderson Primary School,TRUE

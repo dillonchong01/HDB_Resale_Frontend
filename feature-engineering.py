@@ -92,28 +92,27 @@ if __name__ == "__main__":
     mrts = pd.read_csv("datasets/coordinates/MRT_LatLong.csv")
     malls = pd.read_csv("datasets/coordinates/Mall_LatLong.csv")
     schools = pd.read_csv("datasets/coordinates/School_LatLong.csv")
-    hdbs = pd.read_csv("datasets/coordinates/HDB_LatLong.csv")
+    hdbs = pd.read_csv("datasets/HDB_Features.csv")
     cpi = pd.read_csv("datasets/CPI.csv")
 
-    hdbs = hdbs.iloc[3001:4001]
 
     # # Get HDB Distance Features
-    hdbs = engineer_distance_features(hdbs, mrts, malls, schools)
-    hdbs.to_csv("datasets/HDB_Features.csv", index=False, mode='a', header=False)
+    # hdbs = engineer_distance_features(hdbs, mrts, malls, schools)
+    # hdbs.to_csv("datasets/HDB_Features.csv", index=False, mode='a', header=False)
 
 
-    # # Join Engineered Features with Main Dataframe
-    # final_df = pd.merge(df, hdbs[["Address", "Distance_MRT", "Distance_Mall", "Within_1km_of_Pri"]], on='Address', how='left')
-    # final_df = pd.merge(final_df, cpi, on=['Year', 'Month'], how='left')
+    # Join Engineered Features with Main Dataframe
+    final_df = pd.merge(df, hdbs[["Address", "Distance_MRT", "Distance_Mall", "Within_1km_of_Pri"]], on='Address', how='left')
+    final_df = pd.merge(final_df, cpi, on=['Year', 'Month'], how='left')
 
-    # # Classify Towns into Mature/Non-Mature Estate
-    # mature_estates = [
-    #     "Ang Mo Kio", "Bedok", "Bishan", "Bukit Merah", "Bukit Timah", "Central", "Clementi",
-    #     "Geylang", "Kallang/Whampoa", "Marine Parade", "Pasir Ris", "Queenstown", "Serangoon",
-    #     "Tampines", "Toa Payoh"
-    #     ] 
-    # final_df["Mature"] = final_df["Town"].isin(mature_estates)
+    # Classify Towns into Mature/Non-Mature Estate
+    mature_estates = [
+        "Ang Mo Kio", "Bedok", "Bishan", "Bukit Merah", "Bukit Timah", "Central", "Clementi",
+        "Geylang", "Kallang/Whampoa", "Marine Parade", "Pasir Ris", "Queenstown", "Serangoon",
+        "Tampines", "Toa Payoh"
+        ] 
+    final_df["Mature"] = final_df["Town"].isin(mature_estates)
     
-    # final_df.drop(columns=['Year', 'Month', 'Town', 'Address'], inplace=True)
+    final_df.drop(columns=['Year', 'Month', 'Town', 'Address'], inplace=True)
 
-    # final_df.to_csv("datasets/Final_Resale_Data.csv", index=False)
+    final_df.to_csv("datasets/Final_Resale_Data.csv", index=False)
