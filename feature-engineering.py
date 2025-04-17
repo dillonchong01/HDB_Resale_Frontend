@@ -71,12 +71,12 @@ def engineer_distance_features(hdbs, mrts, malls, schools):
         within_1km.append(school_1km)
     
     # Add New Columns to HDBs Dataframe
-    hdbs["Nearest MRT"] = nearest_mrt
-    hdbs["Distance to MRT"] = mrt_distances
-    hdbs["Nearest Mall"] = nearest_mall
-    hdbs["Distance to Mall"] = mall_distances
-    hdbs["Nearest Pri Sch"] = nearest_school
-    hdbs["Within 1km of Pri"] = within_1km
+    hdbs["Nearest_MRT"] = nearest_mrt
+    hdbs["Distance_MRT"] = mrt_distances
+    hdbs["Nearest_Mall"] = nearest_mall
+    hdbs["Distance_Mall"] = mall_distances
+    hdbs["Nearest_Pri_Sch"] = nearest_school
+    hdbs["Within_1km_of_Pri"] = within_1km
 
     return hdbs
 
@@ -95,7 +95,7 @@ if __name__ == "__main__":
     hdbs = pd.read_csv("datasets/coordinates/HDB_LatLong.csv")
     cpi = pd.read_csv("datasets/CPI.csv")
 
-    hdbs = hdbs.iloc[2312:3001]
+    hdbs = hdbs.iloc[3001:4001]
 
     # # Get HDB Distance Features
     hdbs = engineer_distance_features(hdbs, mrts, malls, schools)
@@ -103,7 +103,7 @@ if __name__ == "__main__":
 
 
     # # Join Engineered Features with Main Dataframe
-    # final_df = pd.merge(df, hdbs[["Address", "Distance to MRT", "Distance to Mall", "Within 1km of Pri"]], on='Address', how='left')
+    # final_df = pd.merge(df, hdbs[["Address", "Distance_MRT", "Distance_Mall", "Within_1km_of_Pri"]], on='Address', how='left')
     # final_df = pd.merge(final_df, cpi, on=['Year', 'Month'], how='left')
 
     # # Classify Towns into Mature/Non-Mature Estate

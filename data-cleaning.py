@@ -44,7 +44,7 @@ def cleanData(df):
     df["Month"] = pd.to_numeric(df["month"].str[5:], errors="coerce")
 
     # Express Remaining Lease in Years
-    df["Remaining Lease"] = df["remaining_lease"].apply(
+    df["Remaining_Lease"] = df["remaining_lease"].apply(
         lambda x: round(int(x.split()[0]) + (int(x.split()[2]) if "month" in x else 0)/12, 3)
         )
     
@@ -58,13 +58,13 @@ def cleanData(df):
         "EXECUTIVE": 5,
         "MULTI-GENERATION": 6
     }
-    df["Flat Type"] = df["flat_type"].map(flat_type_map)
+    df["Flat_Type"] = df["flat_type"].map(flat_type_map)
     
     # Select Relevant Columns
-    df = df[["Year", "Month", "town", "Flat Type", "Address", "Storey", "floor_area_sqm", "Remaining Lease", "resale_price"]]
+    df = df[["Year", "Month", "town", "Flat_Type", "Address", "Storey", "floor_area_sqm", "Remaining_Lease", "resale_price"]]
     df = df.rename(columns={
         "town": "Town",
-        "floor_area_sqm": "Floor Area",
+        "floor_area_sqm": "Floor_Area",
         "resale_price": "Price"
     })
 
