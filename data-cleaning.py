@@ -48,10 +48,22 @@ def cleanData(df):
         lambda x: round(int(x.split()[0]) + (int(x.split()[2]) if "month" in x else 0)/12, 3)
         )
     
+    # Convert Flat Type to Ordered Factor
+    flat_type_map = {
+        "1 ROOM": 0,
+        "2 ROOM": 1,
+        "3 ROOM": 2,
+        "4 ROOM": 3,
+        "5 ROOM": 4,
+        "EXECUTIVE": 5,
+        "MULTI-GENERATION": 6
+    }
+    df["Flat Type"] = df["flat_type"].map(flat_type_map)
+    
     # Select Relevant Columns
-    df = df[["Year", "Month", "flat_type", "Address", "Storey", "floor_area_sqm", "Remaining Lease", "resale_price"]]
+    df = df[["Year", "Month", "town", "Flat Type", "Address", "Storey", "floor_area_sqm", "Remaining Lease", "resale_price"]]
     df = df.rename(columns={
-        "flat_type": "Flat Type",
+        "town": "Town",
         "floor_area_sqm": "Floor Area",
         "resale_price": "Price"
     })

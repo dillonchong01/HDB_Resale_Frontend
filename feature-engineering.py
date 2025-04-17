@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import time
 import requests
 from tqdm import tqdm
 from haversine import haversine, Unit
@@ -13,7 +14,7 @@ def nearest_loc(hdb_lat, hdb_lon, loc_df):
         haversine(hdb_point, loc, unit=Unit.KILOMETERS) for loc in loc_points
     ])
     min_idx = np.argmin(dists)
-    within_1km = dists[min_idx] <= 1
+    within_1km = None if dists[min_idx] == 0 else dists[min_idx] <= 1
     return loc_df.iloc[min_idx]["Address"], loc_df.iloc[min_idx]["Lat"], loc_df.iloc[min_idx]["Long"], within_1km
 
 
@@ -94,16 +95,25 @@ if __name__ == "__main__":
     hdbs = pd.read_csv("datasets/coordinates/HDB_LatLong.csv")
     cpi = pd.read_csv("datasets/CPI.csv")
 
-    hdbs = hdbs.iloc[2001:]
+    hdbs = hdbs.iloc[2312:3001]
 
-    # Get HDB Distance Features
+    # # Get HDB Distance Features
     hdbs = engineer_distance_features(hdbs, mrts, malls, schools)
     hdbs.to_csv("datasets/HDB_Features.csv", index=False, mode='a', header=False)
 
 
     # # Join Engineered Features with Main Dataframe
-    # final_df = pd.merge(df, hdbs[["Address", "Distance to MRT", "Distance to Mall"]], on='Address', how='left')
+    # final_df = pd.merge(df, hdbs[["Address", "Distance to MRT", "Distance to Mall", "Within 1km of Pri"]], on='Address', how='left')
     # final_df = pd.merge(final_df, cpi, on=['Year', 'Month'], how='left')
-    # final_df.drop(columns=['Year', 'Month', 'Address'], inplace=True)
+
+    # # Classify Towns into Mature/Non-Mature Estate
+    # mature_estates = [
+    #     "Ang Mo Kio", "Bedok", "Bishan", "Bukit Merah", "Bukit Timah", "Central", "Clementi",
+    #     "Geylang", "Kallang/Whampoa", "Marine Parade", "Pasir Ris", "Queenstown", "Serangoon",
+    #     "Tampines", "Toa Payoh"
+    #     ] 
+    # final_df["Mature"] = final_df["Town"].isin(mature_estates)
+    
+    # final_df.drop(columns=['Year', 'Month', 'Town', 'Address'], inplace=True)
 
     # final_df.to_csv("datasets/Final_Resale_Data.csv", index=False)
