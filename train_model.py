@@ -1,13 +1,14 @@
 import pandas as pd
 import numpy as np
 import lightgbm as lgb
+import pickle
 from pathlib import Path
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import root_mean_squared_error
 
 # Configs
 DATA_PATH = Path("datasets/Final_Resale_Data.csv")
-MODEL_PATH = Path("models/lgbm_model.txt")
+MODEL_PATH = Path("models/lgbm_model")
 CATEGORICAL_COLS = ["Flat_Type", "Within_1km_of_Pri", "Mature"]
 
 # Main Function
@@ -55,7 +56,8 @@ def main():
 
     # Save Model
     MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
-    bst.save_model(MODEL_PATH, num_iteration=bst.best_iteration)
+    with open(MODEL_PATH.with_suffix(".pkl"), "wb") as f:
+        pickle.dump(bst, f)
     print(f"Model saved to {MODEL_PATH}")
 
     # Evaluation

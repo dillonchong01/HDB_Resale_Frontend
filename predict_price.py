@@ -1,23 +1,40 @@
-import numpy as np
-import pandas as pd
-import lightgbm as lgb
+import os
+import pickle
 from pathlib import Path
 from typing import Dict, Any
+import numpy as np
+import pandas as pd
 from data_transformation.feature_engineering import authenticate, get_distance, nearest_loc
 from data_transformation.coordinate_api_caller import get_lat_long
 
 
 # Config
-MODEL_PATH = Path("models/lgbm_model.txt")
-HDB_FEATURE_PATH = Path("datasets/HDB_Features.csv")
-MRT_COORD_PATH = Path("datasets/coordinates/MRT_LatLong.csv")
-MALL_COORD_PATH = Path("datasets/coordinates/Mall_LatLong.csv")
-SCHOOL_COORD_PATH = Path("datasets/coordinates/School_LatLong.csv")
-MATURE_ESTATES = [
-    "ANG MO KIO", "BEDOK", "BISHAN", "BUKIT MERAH", "BUKIT TIMAH", "CENTRAL", "CLEMENTI",
-    "GEYLANG", "KALLANG/WHAMPOA", "MARINE PARADE", "PASIR RIS", "QUEENSTOWN", "SERANGOON",
+MODEL_PATH = Path(os.getenv("MODEL_PATH", "models/lgbm_model.pkl"))
+HDB_FEATURE_PATH = Path(os.getenv("HDB_FEATURE_PATH", "datasets/HDB_Features.csv"))
+MRT_COORD_PATH = Path(os.getenv("MRT_COORD_PATH", "datasets/coordinates/MRT_LatLong.csv"))
+MALL_COORD_PATH = Path(os.getenv("MALL_COORD_PATH", "datasets/coordinates/Mall_LatLong.csv"))
+SCHOOL_COORD_PATH = Path(os.getenv("SCHOOL_COORD_PATH", "datasets/coordinates/School_LatLong.csv"))
+MATURE_ESTATES = set([
+    "ANG MO KIO", "BEDOK", "BISHAN", "BUKIT MERAH", "BUKIT TIMAH",
+    "CENTRAL", "CLEMENTI", "GEYLANG", "KALLANG/WHAMPOA",
+    "MARINE PARADE", "PASIR RIS", "QUEENSTOWN", "SERANGOON",
     "TAMPINES", "TOA PAYOH"
-]
+])
+
+# Load Model
+if not MODEL_PATH.exists():
+    raise FileNotFoundError(f"Model file not found at {MODEL_PATH}")
+with open(MODEL_PATH, "rb") as f:
+    model = pickle.load(f)
+
+# Load Lookup Datasets
+hdb_features = pd.read_csv(HDB_FEATURE_PATH).set_index("Address") if HDB_FEATURE_PATH.exists() else None
+mrts = pd.read_csv(MRT_COORD_PATH)
+malls = pd.read_csv(MALL_COORD_PATH)
+schools = pd.read_csv(SCHOOL_COORD_PATH)
+
+# Authenticate
+api_token = authenticate()
 
 # Get Location Features
 def get_location_features(address: str) -> Dict[str, Any]:
@@ -30,24 +47,19 @@ def get_location_features(address: str) -> Dict[str, Any]:
     Returns:
         Dictionary with keys: Distance_MRT, Distance_Mall, Within_1km_of_Pri, Mature
     """
-    # If HDB already exists in our HDB Feature Dataset, extract location values from there
-    if HDB_FEATURE_PATH.exists():
-        hdb_features = pd.read_csv(HDB_FEATURE_PATH)
-        matched = hdb_features[hdb_features["Address"] == address.strip().upper()]
-        if not matched.empty:
-            return {
-                "Distance_MRT": matched.iloc[0]["Distance_MRT"],
-                "Distance_Mall": matched.iloc[0]["Distance_Mall"],
-                "Within_1km_of_Pri": matched.iloc[0]["Within_1km_of_Pri"]
-            }
-    api_token = authenticate()
+    address = address.strip().upper()
+    # If Address exists in HDB_Features, Extract Location Values
+    if hdb_features is not None and address in hdb_features.index:
+        row = hdb_features.loc[address]
+        return {
+            "Distance_MRT": row["Distance_MRT"],
+            "Distance_Mall": row["Distance_Mall"],
+            "Within_1km_of_Pri": row["Within_1km_of_Pri"]
+        }
+    
+    # Else, use OneMap API to get information
     df = get_lat_long([address], api_token)
-    hdb_lat = df['Lat'][0]
-    hdb_long = df['Long'][0]
-
-    mrts = pd.read_csv(MRT_COORD_PATH)
-    malls = pd.read_csv(MALL_COORD_PATH)
-    schools = pd.read_csv(SCHOOL_COORD_PATH)
+    hdb_lat, hdb_long = df.loc[0, ["Lat", "Long"]]
 
     # Get Distance to Nearest MRT
     _, mrt_lat, mrt_long, _ = nearest_loc(hdb_lat, hdb_long, mrts)
@@ -81,12 +93,6 @@ def predict_price(input_features: Dict[str, Any]) -> float:
     Returns:
         float: Predicted resale price in SGD (rounded to 2 decimal places)
     """
-    if not MODEL_PATH.exists():
-        raise FileNotFoundError(f"Trained model not found at {MODEL_PATH}")
-    
-    # Load Model
-    model = lgb.Booster(model_file=str(MODEL_PATH))
-
     # Get Location Features
     location_features = get_location_features(input_features["Address"])
 
@@ -107,4 +113,4 @@ def predict_price(input_features: Dict[str, Any]) -> float:
     pred_log = model.predict(input_df, num_iteration=model.best_iteration)
     pred_price = np.expm1(pred_log[0])
 
-    return int(round(pred_price / 1000.0) * 1000)
+    return float(round(pred_price / 1000.0) * 1000)
