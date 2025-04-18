@@ -1,18 +1,26 @@
-# 1. Start from a lightweight Python image
-FROM python:3.11-slim
+# Start from a lightweight Python image
+FROM python:3.10-slim
 
-# 2. Set a working directory in the container
+# Update apt repository to a more reliable mirror (e.g., US mirror)
+RUN echo "deb http://ftp.us.debian.org/debian/ bookworm main" > /etc/apt/sources.list
+
+# Install required system dependencies
+RUN apt-get update --allow-insecure-repositories && apt-get install -y \
+    libgomp1 \
+    && rm -rf /var/lib/apt/lists/*
+    
+# Set a working directory in the container
 WORKDIR /app
 
-# 3. Copy dependency manifest and install them
+# Copy dependency manifest and install them
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 4. Copy all your code into the container
+# Copy all your code into the container
 COPY . .
 
-# 5. Expose the port your FastAPI app uses
+# Expose the port your FastAPI app uses
 EXPOSE 8000
 
-# 6. Tell Docker how to start your app
-CMD ["uvicorn", "main:task_app", "--host", "0.0.0.0", "--port", "$PORT"]
+# Tell Docker how to start your app
+CMD ["uvicorn", "main:task_app", "--host", "0.0.0.0", "--port", "8000"]

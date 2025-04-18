@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from predict_price import get_location_features, predict_price
+from predict_price import predict_price
 
 # Create FastAPI Instance
 task_app = FastAPI(
@@ -24,6 +24,7 @@ class PredictResponse(BaseModel):
     price: float         # Predicted resale price in SGD
 
 # 6. Health-Check Endpoint to keep Container Warm
+@task_app.get("/health")
 async def health_check():
     """
     Simple route to check service status.
@@ -45,30 +46,10 @@ async def predict_endpoint(request: PredictRequest):
         # Convert Pydantic model to dict for processing
         input_data = request.model_dump()
 
-        # 1) Compute location-based features
-        location_feats = get_location_features(input_data["Address"])
+        # Get prediction from your model
+        predicted_price = predict_price(input_data)
 
-        # 2) Aggregate all features for prediction
-        features = {
-            "Flat_Type": input_data["Flat_Type"],
-            "Storey": input_data["Storey"],
-            "Floor_Area": input_data["Floor_Area"],
-            "Remaining_Lease": input_data["Remaining_Lease"],
-            "CPI": input_data["CPI"],
-            # The location function returns keys Distance_MRT, Distance_Mall, Within_1km_of_Pri
-            **location_feats,
-            # 'Mature' flag based on Town membership
-            "Mature": input_data["Town"].strip().upper() in [
-                "ANG MO KIO","BEDOK","BISHAN","BUKIT MERAH","BUKIT TIMAH",
-                "CENTRAL","CLEMENTI","GEYLANG","KALLANG/WHAMPOA","MARINE PARADE",
-                "PASIR RIS","QUEENSTOWN","SERANGOON","TAMPINES","TOA PAYOH"
-            ]
-        }
-
-        # 3) Get prediction from your model
-        predicted_price = predict_price(features)
-
-        # 4) Return the result wrapped in PredictResponse
+        # Return the result wrapped in PredictResponse
         return PredictResponse(price=predicted_price)
 
     except Exception as e:
