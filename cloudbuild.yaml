@@ -32,3 +32,6 @@ steps:
 substitutions:
   _REGION: asia-southeast1
   _SERVICE_NAME: hdb-price-service
+
+options:
+  logging: CLOUD_LOGGING_ONLY
