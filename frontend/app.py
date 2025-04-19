@@ -4,6 +4,24 @@ import requests
 # Initialize Flask app
 app = Flask(__name__)
 
+# Health Check to trigger API Warm Up when App Starts
+def health_check():
+    try:
+        url = 'https://hdb-price-service-530401088896.asia-southeast1.run.app/health'
+        response = requests.get(url)
+        if response.status_code == 200:
+            print("API is ready and warmed up.")
+        else:
+            print("Failed to connect to the API for warm-up.")
+    except Exception as e:
+        print(f"Error during health check: {e}")
+health_check()
+
+# Filter to Format Price with Commas
+@app.template_filter('format_price')
+def format_price(value):
+    return f"${value:,.0f}"
+
 # Define Route to Prediction Form
 @app.route('/', methods=['GET'])
 def index():

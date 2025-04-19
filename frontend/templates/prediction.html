@@ -1,11 +1,17 @@
 {% extends "base.html" %}
 
-{% block title %}HDB Resale Price Prediction Result{% endblock %}
+{% block title %}Predicted Resale Price{% endblock %}
 
 {% block content %}
+<h1 class="page-title">Predicted Resale Price</h1>
+
+<div class="form-container">
     <div class="result-box">
-        <h2>Predicted Resale Price</h2>
-        <p class="price">SGD {{ price | round(2) }}</p>
+        <h2>
+            <span style="color: black;">Predicted Resale Value: </span>
+            <span style="color: #49cb70;">{{ price | format_price }}</span>
+        </h2>
         <button onclick="window.location.href='/'">Go Back</button>
     </div>
+</div>
 {% endblock %}
