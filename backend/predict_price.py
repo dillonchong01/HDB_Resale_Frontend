@@ -20,6 +20,15 @@ MATURE_ESTATES = set([
     "MARINE PARADE", "PASIR RIS", "QUEENSTOWN", "SERANGOON",
     "TAMPINES", "TOA PAYOH"
 ])
+FLAT_TYPE_MAP = {
+        "1 Room": 0,
+        "2 Room": 1,
+        "3 Room": 2,
+        "4 Room": 3,
+        "5 Room": 4,
+        "Executive": 5,
+        "Multi-Gen": 6
+    }
 
 # Load Model
 if not MODEL_PATH.exists():
@@ -97,7 +106,7 @@ def predict_price(input_features: Dict[str, Any]) -> float:
     location_features = get_location_features(input_features["Address"])
 
     features = {
-        "Flat_Type": input_features["Flat_Type"],
+        "Flat_Type": FLAT_TYPE_MAP.get(input_features["Flat_Type"]),
         "Storey": input_features["Storey"],
         "Floor_Area": input_features["Floor_Area"],
         "Remaining_Lease": input_features["Remaining_Lease"],

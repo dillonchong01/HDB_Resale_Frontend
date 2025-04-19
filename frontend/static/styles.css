@@ -1,0 +1,160 @@
+/* Body styling */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 1rem;
+    background-image: url('background.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+}
+
+/* Dark overlay over the background image */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 0;
+}
+
+/* Page title styling */
+.page-title {
+    position: relative;
+    z-index: 2;
+    color: #ffffff;
+    font-size: 64px;
+}
+
+/* Form container styling */
+.form-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px 30px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+
+/* Input field styling */
+input[type="number"],
+input[type="text"],
+select {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0 12px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+/* Button Styling */
+button {
+    background-color: #007BFF;
+    color: white;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+/* Button Hover Effect */
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Multi-Step Form Input */
+.multi-step-form { position: relative; }
+
+/* Input Description */
+.step h2 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+/* Form Input */
+.step {
+    display: block;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    pointer-events: none;
+    transition: opacity 0.5s, max-height 0.5s, padding 0.5s;
+    padding: 0;
+}
+
+/* CSS for Next Button to input parameters */
+#step1:checked ~ .step1,
+#step2:checked ~ .step2,
+#step3:checked ~ .step3,
+#step4:checked ~ .step4,
+#step5:checked ~ .step5,
+#step6:checked ~ .step6,
+#step7:checked ~ .step7 {
+    opacity: 1;
+    max-height: 200px;
+    pointer-events: all;
+    padding: 1rem 0;
+    width: 100%;
+}
+
+.step label[for^="step"] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 14px 12px;
+    box-sizing: border-box;
+    background-color: #007BFF;
+    color: white;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+    text-align: center;
+}
+  
+.step label[for^="step"]:hover {
+    background-color: #0056b3;
+}
+
+
+
+/* Responsive Design for Smaller Screens */
+@media (max-width: 600px) {
+    .form-container {
+        padding: 20px;
+    }
+  
+    h1 {
+        font-size: 1.5rem;
+    }
+  
+    input[type="number"],
+    input[type="text"] {
+        padding: 10px;
+        font-size: 1rem;
+    }
+  
+    button {
+        padding: 12px 16px;
+    }
+}

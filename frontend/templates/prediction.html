@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}HDB Resale Price Prediction Result{% endblock %}
+
+{% block content %}
+    <div class="result-box">
+        <h2>Predicted Resale Price</h2>
+        <p class="price">SGD {{ price | round(2) }}</p>
+        <button onclick="window.location.href='/'">Go Back</button>
+    </div>
+{% endblock %}

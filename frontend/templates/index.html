@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form class="multi-step-form" action="/predict" method="POST">
+  {# hidden radios to track the current step #}
+  <input type="radio" name="step" id="step1" checked hidden>
+  <input type="radio" name="step" id="step2" hidden>
+  <input type="radio" name="step" id="step3" hidden>
+  <input type="radio" name="step" id="step4" hidden>
+  <input type="radio" name="step" id="step5" hidden>
+  <input type="radio" name="step" id="step6" hidden>
+  <input type="radio" name="step" id="step7" hidden>
+
+  <!-- Dropdown Menu for Flat Type -->
+  <div class="step step1">
+    <h2>Flat Type:</h2>
+    <select id="Flat_Type" name="Flat_Type" required>
+        <option value="" disabled selected>Select a flat type</option>
+        {% for label in ["1 Room", "2 Room", "3 Room", "4 Room", "5 Room", "Executive", "Multi-Gen"] %}
+            <option value="{{ label }}">{{ label }}</option>
+        {% endfor %}
+    </select>
+    <label for="step2">Next</label>
+  </div>
+
+  <!-- Input Floor/Storey -->
+  <div class="step step2">
+    <h2 for="Storey">Storey:</h2>
+    <input id="Storey" name="Storey" type="number" required>
+    <label for="step3">Next</label>
+  </div>
+
+  <!-- Input Floor Area -->
+  <div class="step step3">
+    <h2 for="Floor_Area">Floor Area (sqm):</h2>
+    <input id="Floor_Area" name="Floor_Area" type="number" step="any" required>
+    <label for="step4">Next</label>
+  </div>
+
+  <!-- Input Remaining Lease -->
+  <div class="step step4">
+    <h2 for="Remaining_Lease">Remaining Lease (Years):</h2>
+    <input id="Remaining_Lease" name="Remaining_Lease" type="number" step="any" required>
+    <label for="step5">Next</label>
+  </div>
+
+  <!-- Input CPI -->
+  <div class="step step5">
+    <h2 for="CPI">Consumer Price Index (CPI):</h2>
+    <input id="CPI" name="CPI" type="number" step="any" required>
+    <label for="step6">Next</label>
+  </div>
+
+  <!-- STEP 6 -->
+  <div class="step step6">
+    <h2 for="Address">Address:</h2>
+    <input id="Address" name="Address" type="text" required>
+    <label for="step7">Next</label>
+  </div>
+
+  <!-- STEP 7 (submit) -->
+  <div class="step step7">
+    <h2 for="Town">Town:</h2>
+    <select id="Town" name="Town" required>
+        <option value="" disabled selected>Select your town</option>
+        {% for town in [
+            "Ang Mo Kio", "Bedok", "Bishan", "Bukit Batok", "Bukit Merah", "Bukit Panjang", "Bukit Timah",
+            "Central", "Choa Chu Kang", "Clementi", "Geylang", "Hougang", "Jurong East", "Jurong West",
+            "Kallang/Whampoa", "Marine Parade", "Pasir Ris", "Punggol", "Queenstown", "Sembawang",
+            "Sengkang", "Serangoon", "Tampines", "Toa Payoh", "Woodlands", "Yishun"
+        ] %}
+            <option value="{{ town }}">{{ town.title() }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Predict</button>
+  </div>
+</form>
+{% endblock %}
