@@ -23,42 +23,59 @@
                     <option value="{{ label }}">{{ label }}</option>
                 {% endfor %}
             </select>
-            <label for="step2">Next</label>
+            <div class="nav-buttons">
+                <label for="step2" class="next">Next</label>
+            </div>
         </div>
 
         <!-- Input Floor/Storey -->
         <div class="step step2">
             <h2 for="Storey">Storey:</h2>
             <input id="Storey" name="Storey" type="number" required>
-            <label for="step3">Next</label>
+            <div class="nav-buttons">
+                <label for="step1" class="prev">Previous</label>
+                <label for="step3" class="next">Next</label>
+            </div>
         </div>
 
         <!-- Input Floor Area -->
         <div class="step step3">
             <h2 for="Floor_Area">Floor Area (sqm):</h2>
             <input id="Floor_Area" name="Floor_Area" type="number" step="any" required>
-            <label for="step4">Next</label>
+            <div class="nav-buttons">
+                <label for="step2" class="prev">Previous</label>
+                <label for="step4" class="next">Next</label>
+            </div>
         </div>
 
         <!-- Input Remaining Lease -->
         <div class="step step4">
             <h2 for="Remaining_Lease">Remaining Lease (Years):</h2>
             <input id="Remaining_Lease" name="Remaining_Lease" type="number" step="any" required>
-            <label for="step5">Next</label>
+            <div class="nav-buttons">
+                <label for="step3" class="prev">Previous</label>
+                <label for="step5" class="next">Next</label>
+            </div>
         </div>
 
         <!-- Input CPI -->
         <div class="step step5">
             <h2 for="CPI">Consumer Price Index (CPI):</h2>
             <input id="CPI" name="CPI" type="number" step="any" required>
-            <label for="step6">Next</label>
+            <div class="nav-buttons">
+                <label for="step4" class="prev">Previous</label>
+                <label for="step6" class="next">Next</label>
+            </div>
         </div>
 
         <!-- Input Address String -->
         <div class="step step6">
-            <h2 for="Address">Address:</h2>
+            <h2 for="Address">Address (E.g. 747 JURONG WEST ST 73):</h2>
             <input id="Address" name="Address" type="text" required>
-            <label for="step7">Next</label>
+            <div class="nav-buttons">
+                <label for="step5" class="prev">Previous</label>
+                <label for="step7" class="next">Next</label>
+            </div>
         </div>
 
         <!-- Dropdown Menu for Town -->
@@ -75,7 +92,10 @@
                     <option value="{{ town }}">{{ town.title() }}</option>
                 {% endfor %}
             </select>
-            <button type="submit">Predict</button>
+            <div class="nav-buttons">
+                <label for="step6" class="prev">Previous</label>
+                <button type="submit" class="next">Predict</button>
+            </div>
         </div>
 
     </form>

@@ -51,7 +51,6 @@ def predict():
     }
 
     # Send POST request to your deployed API
-    print(data)
     url = 'https://hdb-price-service-530401088896.asia-southeast1.run.app/predict'
     response = requests.post(url, json=data)
 

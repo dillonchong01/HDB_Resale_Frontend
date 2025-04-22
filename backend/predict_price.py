@@ -56,7 +56,7 @@ def get_location_features(address: str) -> Dict[str, Any]:
     Returns:
         Dictionary with keys: Distance_MRT, Distance_Mall, Within_1km_of_Pri, Mature
     """
-    address = address.strip().upper()
+    address = address.upper().replace("BLOCK", "").replace("BLK", "").strip()
     # If Address exists in HDB_Features, Extract Location Values
     if hdb_features is not None and address in hdb_features.index:
         row = hdb_features.loc[address]

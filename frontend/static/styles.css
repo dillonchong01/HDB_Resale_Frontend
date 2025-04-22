@@ -49,7 +49,6 @@ body {
     z-index: 1;
 }
 
-
 /* Input field styling */
 input[type="number"],
 input[type="text"],
@@ -61,25 +60,6 @@ select {
     border-radius: 5px;
     font-size: 1rem;
     box-sizing: border-box;
-}
-
-/* Button Styling */
-button {
-    background-color: #007BFF;
-    color: white;
-    padding: 14px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 10px;
-    transition: background-color 0.3s ease;
-}
-
-/* Button Hover Effect */
-button:hover {
-    background-color: #0056b3;
 }
 
 /* Multi-Step Form Input */
@@ -102,7 +82,41 @@ button:hover {
     padding: 0;
 }
 
-/* CSS for Next Button to input parameters */
+/* CSS for Container of Next/Previous Button */
+.nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.nav-buttons .prev,
+.nav-buttons .next,
+button {
+  flex: 1;
+  text-align: center;
+  padding: 14px 12px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: background-color 0.3s ease;
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+}
+
+.nav-buttons .next {
+    margin-left: auto;
+}
+
+.nav-buttons .prev:hover,
+.nav-buttons .next:hover,
+button:hover {
+  background-color: #0056b3;
+}
+
+
+/* CSS for Next/Previous Button to input parameters */
 #step1:checked ~ .step1,
 #step2:checked ~ .step2,
 #step3:checked ~ .step3,
@@ -116,28 +130,6 @@ button:hover {
     padding: 1rem 0;
     width: 100%;
 }
-
-.step label[for^="step"] {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    padding: 14px 12px;
-    box-sizing: border-box;
-    background-color: #007BFF;
-    color: white;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: background-color 0.3s ease;
-    text-align: center;
-}
-  
-.step label[for^="step"]:hover {
-    background-color: #0056b3;
-}
-
 
 /* Responsive Design for Smaller Screens */
 @media (max-width: 600px) {
