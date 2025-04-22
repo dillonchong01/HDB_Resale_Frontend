@@ -140,12 +140,12 @@ if __name__ == "__main__":
         exit(1)
 
     # Read CSVs
-    df = pd.read_csv("datasets/Cleaned_Resale_Data.csv")
-    mrts = pd.read_csv("datasets/coordinates/MRT_LatLong.csv")
-    malls = pd.read_csv("datasets/coordinates/Mall_LatLong.csv")
-    schools = pd.read_csv("datasets/coordinates/School_LatLong.csv")
-    hdbs = pd.read_csv("datasets/HDB_Features.csv")
-    cpi = pd.read_csv("datasets/CPI.csv")
+    df = pd.read_csv("backend/datasets/Cleaned_Resale_Data.csv")
+    mrts = pd.read_csv("backend/datasets/coordinates/MRT_LatLong.csv")
+    malls = pd.read_csv("backend/datasets/coordinates/Mall_LatLong.csv")
+    schools = pd.read_csv("backend/datasets/coordinates/School_LatLong.csv")
+    hdbs = pd.read_csv("backend/datasets/HDB_Features.csv")
+    cpi = pd.read_csv("backend/datasets/CPI.csv")
 
 
     # # Get HDB Distance Features
@@ -155,13 +155,11 @@ if __name__ == "__main__":
 
     # Join Engineered Features with Main Dataframe
     final_df = pd.merge(df, hdbs[["Address", "Distance_MRT", "Distance_Mall", "Within_1km_of_Pri"]], on='Address', how='left')
-    final_df = pd.merge(final_df, cpi, on=['Year', 'Month'], how='left')
+    final_df = pd.merge(final_df, cpi, on='Quarter', how='left')
 
     # Classify Towns into Mature/Non-Mature Estate
     final_df["Mature"] = final_df["Town"].isin(MATURE_ESTATES)
-    print(final_df.head())
-
     
-    final_df.drop(columns=['Year', 'Month', 'Town', 'Address'], inplace=True)
+    final_df.drop(columns=['Quarter', 'Town', 'Address'], inplace=True)
 
-    final_df.to_csv("datasets/Final_Resale_Data.csv", index=False)
+    final_df.to_csv("backend/datasets/Final_Resale_Data.csv", index=False)

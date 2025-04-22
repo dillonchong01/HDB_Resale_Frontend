@@ -7,8 +7,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import root_mean_squared_error
 
 # Configs
-DATA_PATH = Path("datasets/Final_Resale_Data.csv")
-MODEL_PATH = Path("models/lgbm_model")
+DATA_PATH = Path("backend/datasets/Final_Resale_Data.csv")
+MODEL_PATH = Path("backend/models/lgbm_model")
 CATEGORICAL_COLS = ["Flat_Type", "Within_1km_of_Pri", "Mature"]
 
 # Main Function
@@ -17,7 +17,7 @@ def main():
         raise FileNotFoundError(f"Dataset not found: {DATA_PATH}")
     
     # Load Dataset
-    df = pd.read_csv("datasets/Final_Resale_Data.csv")
+    df = pd.read_csv("backend/datasets/Final_Resale_Data.csv")
     df = df.dropna()
 
     # Create Train and Test Set (with Log Transformation of Price Label)
@@ -69,6 +69,11 @@ def main():
     y_train_exp = np.expm1(y_train)
     print("Test RMSE:", root_mean_squared_error(y_test_exp, test_pred))
     print("Train RMSE:", root_mean_squared_error(y_train_exp, train_pred))
+    test_mape  = np.mean(np.abs((y_test_exp  - test_pred ) / y_test_exp ))  * 100
+    train_mape = np.mean(np.abs((y_train_exp - train_pred) / y_train_exp))  * 100
+
+    print(f"Test  MAPE: {test_mape:.2f}%")
+    print(f"Train MAPE: {train_mape:.2f}%")
 
     # Feature Importance
     importances = bst.feature_importance(importance_type='gain')

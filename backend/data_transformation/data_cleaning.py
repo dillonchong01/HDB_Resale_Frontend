@@ -5,8 +5,8 @@ import pandas as pd
 from pandas import DataFrame
 
 # Default File Paths
-INPUT_CSV = Path("datasets/Resale.csv")
-OUTPUT_CSV = Path("datasets/Cleaned_Resale_Data.csv")
+INPUT_CSV = Path("backend/datasets/Resale.csv")
+OUTPUT_CSV = Path("backend/datasets/Cleaned_Resale_Data.csv")
 
 # Flat Type Mapping
 FLAT_TYPE_MAP: Dict[str, int] = {
@@ -51,14 +51,14 @@ def clean_data(df: DataFrame) -> DataFrame:
         df_clean["storey_range"].str.extract(r"^(\d+)")[0], errors="coerce"
     )
 
-    # Convert 'month' column to Year and Month
-    df_clean["Year"] = pd.to_numeric(
-        df_clean["month"].str.slice(0, 4), errors="coerce"
+    # Convert 'month' column to Quarter
+    df_clean['Quarter'] = (
+        pd.to_datetime(df_clean['month'], format='%Y-%m', errors='coerce')
+        .dt.to_period('Q')
+        .astype(str)
+        .str.replace(r'Q', '-Q')
     )
-    df_clean["Month"] = pd.to_numeric(
-        df_clean["month"].str.slice(5, 7), errors="coerce"
-    
-    )
+
     # Express Remaining Lease in Years
     df_clean["Remaining_Lease"] = df_clean["remaining_lease"].apply(
         lambda x: round(int(x.split()[0]) + (int(x.split()[2]) if "month" in x else 0)/12, 3)
@@ -69,7 +69,7 @@ def clean_data(df: DataFrame) -> DataFrame:
     
     # Select Relevant Columns
     selected = [
-        "Year", "Month", "town", "Flat_Type", "Address",
+        "Quarter", "town", "Flat_Type", "Address",
         "Storey", "floor_area_sqm", "Remaining_Lease", "resale_price"
     ]
     df_clean = df_clean[selected].rename(columns={

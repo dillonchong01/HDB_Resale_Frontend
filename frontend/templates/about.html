@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1 class="page-title">About Resale Value Predictor</h1>
+
+  <div class="form-container">
+        <h2>About This Project</h2>
+        <p>
+            Curious what your HDB flat is really worth? Whether you're selling for top dollar or hunting for a fair deal,
+            Resale Value Predictor delivers instant, data‑backed estimates based on your flat's specifications
+        </p>
+
+        <h2>How It Works</h2>
+        <p>🔍 We source every HDB resale transaction since 2017 from the
+            <a href="https://data.gov.sg/datasets/d_8b84c4ee58e3cfc0ece0d773c8ca6abc/view" target="_blank" rel="noopener noreferrer">Housing and Development Board</a>
+        </p>
+        <p>🤖 Our LightGBM regression model uncovers the hidden factors that truly drive prices</p>
+        <p>🔄 Each week, our automated pipeline pulls in new sales data and retrains the model — so your valuations stay sharp</p>
+        <p>☁️ Your flat's details are forwarded to our REST API hosted on Google Cloud to obtain resale price predictions</p>
+        <p>🔗 Developers can also integrate directly: call our API <a href="https://hdb-price-service-530401088896.asia-southeast1.run.app/docs" target="_blank" rel="noopener noreferrer">here</a>
+        </p>
+    </div>
+{% endblock %}

@@ -4,12 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}HDB Price Prediction{% endblock %}</title>
+    <title>{% block title %}Resale Value Predictor{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 
 <body>
     <div class="overlay"></div>
+    <nav class="top-nav">
+        <a href="{{ url_for('index') }}" class="nav-button">Home</a>
+        <a href="{{ url_for('about') }}" class="nav-button">About Me</a>
+    </nav>
     {% block content %}{% endblock %}
 </body>
 

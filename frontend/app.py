@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template, jsonify
 import requests
+from cpi_config import CPI
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -35,7 +36,6 @@ def predict():
     storey = request.form['Storey']
     floor_area = request.form['Floor_Area']
     remaining_lease = request.form['Remaining_Lease']
-    cpi = request.form['CPI']
     address = request.form['Address']
     town = request.form['Town']
 
@@ -45,7 +45,7 @@ def predict():
         "Storey": storey,
         "Floor_Area": floor_area,
         "Remaining_Lease": remaining_lease,
-        "CPI": cpi,
+        "CPI": CPI,
         "Address": address,
         "Town": town
     }
@@ -60,6 +60,11 @@ def predict():
         return render_template('prediction.html', price=result['price'])
     else:
         return jsonify({'error': 'Failed to get prediction'}), 400
+
+# Define Route to About Me
+@app.route('/about', methods=['GET'])
+def about():
+    return render_template('about.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
