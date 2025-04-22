@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, jsonify
 import requests
-from cpi_config import CPI
+from rpi_config import RPI
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -33,8 +33,8 @@ def index():
 def predict():
     # Get Form Data
     flat_type = request.form['Flat_Type']
-    storey = request.form['Storey']
-    floor_area = request.form['Floor_Area']
+    storey = int(request.form['Storey'])
+    floor_area = int(request.form['Floor_Area'])
     remaining_lease = request.form['Remaining_Lease']
     address = request.form['Address']
     town = request.form['Town']
@@ -45,10 +45,11 @@ def predict():
         "Storey": storey,
         "Floor_Area": floor_area,
         "Remaining_Lease": remaining_lease,
-        "CPI": CPI,
+        "RPI": RPI,
         "Address": address,
         "Town": town
     }
+    print(data)
 
     # Send POST request to your deployed API
     url = 'https://hdb-price-service-530401088896.asia-southeast1.run.app/predict'

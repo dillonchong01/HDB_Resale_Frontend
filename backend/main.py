@@ -15,7 +15,7 @@ class PredictRequest(BaseModel):
     Storey: int             # Floor of the unit
     Floor_Area: float       # Size of the unit in square meters
     Remaining_Lease: float  # Remaining lease years
-    CPI: float              # Consumer Price Index at prediction time
+    RPI: float              # Consumer Price Index at prediction time
     Address: str            # Full address string
     Town: str               # Town name, used for 'Mature' flag (True/False)
 

@@ -9,11 +9,11 @@ from data_transformation.coordinate_api_caller import get_lat_long
 
 
 # Config
-MODEL_PATH = Path(os.getenv("MODEL_PATH", "models/lgbm_model.pkl"))
-HDB_FEATURE_PATH = Path(os.getenv("HDB_FEATURE_PATH", "datasets/HDB_Features.csv"))
-MRT_COORD_PATH = Path(os.getenv("MRT_COORD_PATH", "datasets/coordinates/MRT_LatLong.csv"))
-MALL_COORD_PATH = Path(os.getenv("MALL_COORD_PATH", "datasets/coordinates/Mall_LatLong.csv"))
-SCHOOL_COORD_PATH = Path(os.getenv("SCHOOL_COORD_PATH", "datasets/coordinates/School_LatLong.csv"))
+MODEL_PATH = Path(os.getenv("MODEL_PATH", "backend/models/lgbm_model.pkl"))
+HDB_FEATURE_PATH = Path(os.getenv("HDB_FEATURE_PATH", "backend/datasets/HDB_Features.csv"))
+MRT_COORD_PATH = Path(os.getenv("MRT_COORD_PATH", "backend/datasets/coordinates/MRT_LatLong.csv"))
+MALL_COORD_PATH = Path(os.getenv("MALL_COORD_PATH", "backend/datasets/coordinates/Mall_LatLong.csv"))
+SCHOOL_COORD_PATH = Path(os.getenv("SCHOOL_COORD_PATH", "backend/datasets/coordinates/School_LatLong.csv"))
 MATURE_ESTATES = set([
     "ANG MO KIO", "BEDOK", "BISHAN", "BUKIT MERAH", "BUKIT TIMAH",
     "CENTRAL", "CLEMENTI", "GEYLANG", "KALLANG/WHAMPOA",
@@ -95,7 +95,7 @@ def predict_price(input_features: Dict[str, Any]) -> float:
             - 'Storey': Floor level of the unit
             - 'Floor_Area': Size of the unit in square meters
             - 'Remaining_Lease': Remaining lease in years
-            - 'CPI': Consumer Price Index at the time of transaction
+            - 'RPI': Consumer Price Index at the time of transaction
             - 'Address': Full address string used to derive location features
             - 'Mature': Town name (used to check if estate is in mature list)
 
@@ -110,7 +110,7 @@ def predict_price(input_features: Dict[str, Any]) -> float:
         "Storey": input_features["Storey"],
         "Floor_Area": input_features["Floor_Area"],
         "Remaining_Lease": input_features["Remaining_Lease"],
-        "CPI": input_features["CPI"],
+        "RPI": input_features["RPI"],
         "Distance_MRT": location_features["Distance_MRT"],
         "Distance_Mall": location_features["Distance_Mall"],
         "Within_1km_of_Pri": location_features["Within_1km_of_Pri"],

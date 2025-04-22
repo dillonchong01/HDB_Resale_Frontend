@@ -8,7 +8,7 @@ from sklearn.metrics import root_mean_squared_error
 
 # Configs
 DATA_PATH = Path("backend/datasets/Final_Resale_Data.csv")
-MODEL_PATH = Path("backend/models/lgbm_model")
+MODEL_PATH = Path("backend/models/test_lgbm_model")
 CATEGORICAL_COLS = ["Flat_Type", "Within_1km_of_Pri", "Mature"]
 
 # Main Function
@@ -21,8 +21,8 @@ def main():
     df = df.dropna()
 
     # Create Train and Test Set (with Log Transformation of Price Label)
-    X = df.drop("Price", axis=1)
-    y = np.log1p(df["Price"])
+    X = df.drop("Adjusted Price", axis=1)
+    y = np.log1p(df["Adjusted Price"])
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
     # Create Dataset for Light GBM Model Fitting
@@ -41,14 +41,14 @@ def main():
         "min_child_samples": 40,
         "bagging_fraction": 0.7,
         "verbose": -1,
-        "random_state": 42
+        "random_state": 42,
     }
 
     # Train Model
     bst = lgb.train(
         params,
         train_data,
-        num_boost_round=20000,
+        num_boost_round=10000,
         valid_sets=[train_data, test_data],
         valid_names=["train", "test"],
         callbacks=[lgb.early_stopping(stopping_rounds=10)]
