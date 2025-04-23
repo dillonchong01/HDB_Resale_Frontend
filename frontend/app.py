@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, jsonify
 import requests
-import pandas as pd
+import polars as pl
 
 # Config
 RPI = 197.9     # UPDATE EVERY QUARTER
@@ -8,14 +8,14 @@ FLAT_TYPE_MAP = {
     "1 Room": 0, "2 Room": 1, "3 Room": 2,
     "4 Room": 3, "5 Room": 4, "Executive": 5, "Multi-Gen": 6
 }
-HDB_FEATURE_PATH = "backend/datasets/HDB_Features.parquet"
+HDB_FEATURE_PATH = "backend/datasets/HDB_Features.csv"
 PREDICT_URL = "https://hdb-price-service-530401088896.asia-southeast1.run.app/predict"
 HEALTHCHECK_URL = "https://hdb-price-service-530401088896.asia-southeast1.run.app/health"
 
 # ——— Service for Town/Floor Area Lookup Logic ———
 class HDBLookupService:
-    def __init__(self, parquet_path, flat_map):
-        self._df = pd.read_parquet(parquet_path)
+    def __init__(self, csv_path, flat_map):
+        self._df = pl.read_csv(csv_path)
         self._flat_map = flat_map
 
     def lookup(self, address: str, flat_type: str):
