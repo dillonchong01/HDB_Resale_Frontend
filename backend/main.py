@@ -43,10 +43,9 @@ async def homepage():
     <html>
         <head><title>HDB Price Prediction API</title></head>
         <body>
-            <h1>Welcome to the HDB Price Prediction Service</h1>
+            <h1>Welcome to the HDB Resale Price Prediction Service</h1>
             <p>Use the <a href='/docs'>Swagger UI</a> to explore the API endpoints.</p>
             <p>Visit <a href='/predict'>/predict</a> to submit prediction requests.</p>
-            <p>Health check is available at <code>/health</code>.</p>
         </body>
     </html>
     """
