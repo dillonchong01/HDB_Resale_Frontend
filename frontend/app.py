@@ -8,7 +8,7 @@ FLAT_TYPE_MAP = {
     "1 Room": 0, "2 Room": 1, "3 Room": 2,
     "4 Room": 3, "5 Room": 4, "Executive": 5, "Multi-Gen": 6
 }
-HDB_FEATURE_PATH = "backend/datasets/HDB_Features.csv"
+HDB_FEATURE_PATH = "frontend/HDB_Features.csv"
 PREDICT_URL = "https://hdb-price-service-530401088896.asia-southeast1.run.app/predict"
 HEALTHCHECK_URL = "https://hdb-price-service-530401088896.asia-southeast1.run.app/health"
 
