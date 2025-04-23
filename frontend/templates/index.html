@@ -13,8 +13,17 @@
         <input type="radio" name="step" id="step5" hidden>
         <input type="radio" name="step" id="step6" hidden>
 
-        <!-- Dropdown Menu for Flat Type -->
+        <!-- Input Address String -->
         <div class="step step1">
+            <h2 for="Address">Address (E.g. 747 JURONG WEST ST 73):</h2>
+            <input id="Address" name="Address" type="text" required>
+            <div class="nav-buttons">
+                <label for="step2" class="next">Next</label>
+            </div>
+        </div>
+
+        <!-- Dropdown Menu for Flat Type -->
+        <div class="step step2">
             <h2>Flat Type:</h2>
             <select id="Flat_Type" name="Flat_Type" required>
                 <option value="" disabled selected>Select a flat type</option>
@@ -23,44 +32,35 @@
                 {% endfor %}
             </select>
             <div class="nav-buttons">
-                <label for="step2" class="next">Next</label>
-            </div>
-        </div>
-
-        <!-- Input Floor/Storey -->
-        <div class="step step2">
-            <h2 for="Storey">Storey:</h2>
-            <input id="Storey" name="Storey" type="number" required>
-            <div class="nav-buttons">
                 <label for="step1" class="prev">Previous</label>
                 <label for="step3" class="next">Next</label>
             </div>
         </div>
 
-        <!-- Input Floor Area -->
+        <!-- Input Floor/Storey -->
         <div class="step step3">
-            <h2 for="Floor_Area">Floor Area (sqm):</h2>
-            <input id="Floor_Area" name="Floor_Area" type="number" step="any" required>
+            <h2 for="Storey">Storey:</h2>
+            <input id="Storey" name="Storey" type="number" required>
             <div class="nav-buttons">
                 <label for="step2" class="prev">Previous</label>
                 <label for="step4" class="next">Next</label>
             </div>
         </div>
 
-        <!-- Input Remaining Lease -->
+        <!-- Input Floor Area -->
         <div class="step step4">
-            <h2 for="Remaining_Lease">Remaining Lease (Years):</h2>
-            <input id="Remaining_Lease" name="Remaining_Lease" type="number" step="any" required>
+            <h2 for="Floor_Area">Floor Area (sqm):</h2>
+            <input id="Floor_Area" name="Floor_Area" type="number" step="any" required>
             <div class="nav-buttons">
                 <label for="step3" class="prev">Previous</label>
                 <label for="step5" class="next">Next</label>
             </div>
         </div>
 
-        <!-- Input Address String -->
+        <!-- Input Remaining Lease -->
         <div class="step step5">
-            <h2 for="Address">Address (E.g. 747 JURONG WEST ST 73):</h2>
-            <input id="Address" name="Address" type="text" required>
+            <h2 for="Remaining_Lease">Remaining Lease (Years):</h2>
+            <input id="Remaining_Lease" name="Remaining_Lease" type="number" step="any" required>
             <div class="nav-buttons">
                 <label for="step4" class="prev">Previous</label>
                 <label for="step6" class="next">Next</label>
@@ -71,7 +71,7 @@
         <div class="step step6">
             <h2 for="Town">Town:</h2>
             <select id="Town" name="Town" required>
-                <option value="" disabled selected>Select your town</option>
+                <option value="" disabled selected>Select your Town</option>
                 {% for town in [
                     "Ang Mo Kio", "Bedok", "Bishan", "Bukit Batok", "Bukit Merah", "Bukit Panjang", "Bukit Timah",
                     "Central", "Choa Chu Kang", "Clementi", "Geylang", "Hougang", "Jurong East", "Jurong West",
@@ -89,4 +89,5 @@
 
     </form>
 </div>
+
 {% endblock %}

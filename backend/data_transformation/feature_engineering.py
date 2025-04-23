@@ -145,17 +145,25 @@ if __name__ == "__main__":
     malls = pd.read_csv("backend/datasets/coordinates/Mall_LatLong.csv")
     schools = pd.read_csv("backend/datasets/coordinates/School_LatLong.csv")
     hdbs = pd.read_csv("backend/datasets/HDB_Features.csv")
-    cpi = pd.read_csv("backend/datasets/CPI.csv")
+    rpi = pd.read_csv("backend/datasets/RPI.csv")
 
 
     # # Get HDB Distance Features
     # hdbs = engineer_distance_features(hdbs, mrts, malls, schools)
     # hdbs.to_csv("datasets/HDB_Features.csv", index=False, mode='a', header=False)
 
+    # # Get Average SQM and Town of each Address
+    # grouped = df.groupby(['Address', 'Flat_Type', 'Town'])['Floor_Area'].mean().reset_index()
+    # print(grouped.head())
+    # grouped = grouped.groupby(['Address', 'Town']).apply(
+    #     lambda x: {ft: round(area) for ft, area in zip(x['Flat_Type'], x['Floor_Area'])}
+    # ).reset_index(name='Flat_Type_Area_Map')
+    # features_df = pd.merge(hdbs, grouped, on='Address', how='left')
+    # features_df.to_csv("backend/datasets/Test_Data.csv", index=False)
 
     # Join Engineered Features with Main Dataframe
     final_df = pd.merge(df, hdbs[["Address", "Distance_MRT", "Distance_Mall", "Within_1km_of_Pri"]], on='Address', how='left')
-    final_df = pd.merge(final_df, cpi, on='Quarter', how='left')
+    final_df = pd.merge(final_df, rpi, on='Quarter', how='left')
 
     # Classify Towns into Mature/Non-Mature Estate
     final_df["Mature"] = final_df["Town"].isin(MATURE_ESTATES)

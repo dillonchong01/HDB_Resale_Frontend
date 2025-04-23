@@ -14,7 +14,38 @@
         <a href="{{ url_for('index') }}" class="nav-button">Home</a>
         <a href="{{ url_for('about') }}" class="nav-button">About Me</a>
     </nav>
+
     {% block content %}{% endblock %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          const addressEl = document.getElementById('Address');
+          const flatTypeEl = document.getElementById('Flat_Type');
+          const townEl    = document.getElementById('Town');
+          const areaEl    = document.getElementById('Floor_Area');
+        
+          async function getAddressInfo() {
+            const address  = addressEl.value;
+            const flatType = flatTypeEl.value;
+            if (!address || !flatType) return;
+        
+            try {
+              const resp = await fetch(
+                `/get_address_info?address=${encodeURIComponent(address)}&flat_type=${encodeURIComponent(flatType)}`
+              );
+              const data = await resp.json();
+              if (data.town)       townEl.value = data.town;
+              if (data.floor_area) areaEl.value = data.floor_area;
+            } catch (err) {
+              console.error('Could not fetch address info', err);
+            }
+          }
+        
+          addressEl.addEventListener('input', getAddressInfo);
+          flatTypeEl.addEventListener('change', getAddressInfo);
+        });
+    </script>
+
 </body>
 
 </html>

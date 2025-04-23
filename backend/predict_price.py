@@ -21,14 +21,14 @@ MATURE_ESTATES = set([
     "TAMPINES", "TOA PAYOH"
 ])
 FLAT_TYPE_MAP = {
-        "1 Room": 0,
-        "2 Room": 1,
-        "3 Room": 2,
-        "4 Room": 3,
-        "5 Room": 4,
-        "Executive": 5,
-        "Multi-Gen": 6
-    }
+    "1 Room": 0,
+    "2 Room": 1,
+    "3 Room": 2,
+    "4 Room": 3,
+    "5 Room": 4,
+    "Executive": 5,
+    "Multi-Gen": 6
+}
 
 # Load Model
 if not MODEL_PATH.exists():
@@ -95,7 +95,7 @@ def predict_price(input_features: Dict[str, Any]) -> float:
             - 'Storey': Floor level of the unit
             - 'Floor_Area': Size of the unit in square meters
             - 'Remaining_Lease': Remaining lease in years
-            - 'RPI': Consumer Price Index at the time of transaction
+            - 'RPI': Resale Price Index at the time of transaction
             - 'Address': Full address string used to derive location features
             - 'Mature': Town name (used to check if estate is in mature list)
 
