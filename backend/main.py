@@ -7,7 +7,7 @@ from predict_price import predict_price
 app = FastAPI(
     title="HDB Price Prediction API",
     description=(
-        "Predict resale prices of HDB flats using a pre-trained LightGBM model. "
+        "Predicting resale prices of HDB flats using a pre-trained LightGBM model. "
         "Provide flat attributes and receive a price estimate in SGD."
     ),
     version="1.2.0",
@@ -43,9 +43,9 @@ async def homepage():
     <html>
         <head><title>HDB Price Prediction API</title></head>
         <body>
-            <h1>Welcome to the HDB Resale Price Prediction Service</h1>
+            <h1>Welcome to the HDB Resale Price Prediction API Service</h1>
             <p>Use the <a href='/docs'>Swagger UI</a> to explore the API endpoints.</p>
-            <p>Visit <a href='/predict'>/predict</a> to submit prediction requests.</p>
+            <p>POST your data to <code>/predict</code> to get a submit resale price prediction requests.</p>
         </body>
     </html>
     """
