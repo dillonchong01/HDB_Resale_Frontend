@@ -45,7 +45,7 @@ async def homepage():
         <body>
             <h1>Welcome to the HDB Resale Price Prediction API Service</h1>
             <p>Use the <a href='/docs'>Swagger UI</a> to explore the API endpoints.</p>
-            <p>POST your data to <code>/predict</code> to get a submit resale price prediction requests.</p>
+            <p>POST your data to the <code>/predict</code> endpoint to receive HDB Resale Price Predictions via the REST API.</p>
         </body>
     </html>
     """
