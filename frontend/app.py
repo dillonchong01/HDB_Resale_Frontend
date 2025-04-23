@@ -8,7 +8,7 @@ FLAT_TYPE_MAP = {
     "1 Room": 0, "2 Room": 1, "3 Room": 2,
     "4 Room": 3, "5 Room": 4, "Executive": 5, "Multi-Gen": 6
 }
-HDB_FEATURE_PATH = "HDB_Features.csv"
+HDB_FEATURE_PATH = "frontend/HDB_Features.csv"
 PREDICT_URL = "https://hdb-price-service-530401088896.asia-southeast1.run.app/predict"
 HEALTHCHECK_URL = "https://hdb-price-service-530401088896.asia-southeast1.run.app/health"
 
@@ -24,13 +24,14 @@ class HDBLookupService:
 
         # Filter with Address
         df = self._df
-        filtered = df[df['Address'].str.upper() == address.upper()]
-        if filtered.empty:
+        filtered = df.filter(pl.col("Address").str.to_uppercase() == address.upper())
+        if filtered.is_empty():
             return None, None
 
         # Get Town and Floor Area from Filtered DF
-        town = filtered['Town'].iloc[0].title()
-        flat_type_area_map = eval(filtered['Flat_Type_Area_Map'].iloc[0])
+        row = filtered.row(0)
+        town = str(row[df.columns.index("Town")]).title()
+        flat_type_area_map = eval(row[df.columns.index("Flat_Type_Area_Map")])
         floor_area = flat_type_area_map.get(self._flat_map[flat_type])      # Get Floor Area based on Flat Type
         return town, floor_area
 
