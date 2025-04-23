@@ -71,7 +71,7 @@ async def predict_endpoint(request: PredictRequest):
     """
     try:
         # Convert Pydantic model to dict for processing
-        input_data = request.model_dump()
+        input_data = request.dict()
         # Get prediction from your model
         predicted_price = predict_price(input_data)
         return PredictResponse(price=predicted_price)
