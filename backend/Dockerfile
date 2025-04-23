@@ -23,4 +23,4 @@ COPY . .
 EXPOSE 8000
 
 # Tell Docker how to start your app
-CMD ["uvicorn", "main:task_app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
