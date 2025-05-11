@@ -9,8 +9,8 @@ FLAT_TYPE_MAP = {
     "4 Room": 3, "5 Room": 4, "Executive": 5, "Multi-Gen": 6
 }
 HDB_FEATURE_PATH = "HDB_Features.csv"
-PREDICT_URL = "https://hdb-price-service-530401088896.asia-southeast1.run.app/predict"
-HEALTHCHECK_URL = "https://hdb-price-service-530401088896.asia-southeast1.run.app/health"
+PREDICT_URL = "http://hdb-resale-pricing-e5d49496399a.herokuapp.com/predict"
+HEALTHCHECK_URL = "http://hdb-resale-pricing-e5d49496399a.herokuapp.com/health"
 
 # ——— Service for Town/Floor Area Lookup Logic ———
 class HDBLookupService:
