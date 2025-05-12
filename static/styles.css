@@ -231,7 +231,7 @@
   
     .page-title {
       font-size: 2rem;
-      margin-top: 2rem;
+      margin-top: 1rem;
     }
   
     input[type="text"],
@@ -248,7 +248,7 @@
     }
 
     .step h2 {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
   }
   }
   
