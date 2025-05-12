@@ -247,8 +247,9 @@
       padding: 0.75rem;
     }
 
-    .step h2 {
-    font-size: 0.9rem;
-  }
+    .step h2,
+    .result-box h2 {
+      font-size: 0.9rem;
+    }
   }
   
