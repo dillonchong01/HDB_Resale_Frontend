@@ -529,8 +529,7 @@ button[type="submit"] {
   }
 
   .hero-section {
-    min-height: 30vh;
-    padding: var(--spacing-xs) var(--spacing-base);
+    padding: var(--spacing-base) var(--spacing-base);
   }
 
   .page-title {
