@@ -1,11 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="page-title">HDB Resale Value Predictor</h1>
+<div class="hero-section">
+    <h1 class="page-title">HDB Resale Value Predictor</h1>
+    <p class="page-subtitle">Get instant, AI-powered price estimates for your HDB flat</p>
+</div>
 
 <div class="form-container">
     <form class="multi-step-form" action="/predict" method="POST">
-        {# hidden radios to track the current step #}
+        {# Hidden radios to track the current step #}
         <input type="radio" name="step" id="step1" checked hidden>
         <input type="radio" name="step" id="step2" hidden>
         <input type="radio" name="step" id="step3" hidden>
@@ -13,81 +16,122 @@
         <input type="radio" name="step" id="step5" hidden>
         <input type="radio" name="step" id="step6" hidden>
 
-        <!-- Input Address String -->
+        <!-- Step 1: Address Input -->
         <div class="step step1">
-            <h2 for="Address">Address (E.g. 747 JURONG WEST ST 73):</h2>
-            <input id="Address" name="Address" type="text" required>
+            <h2>🏠 Address</h2>
+            <div class="form-group">
+                <label for="Address" class="form-label">Enter your HDB address</label>
+                <input 
+                    id="Address" name="Address" type="text" 
+                    placeholder="e.g., 747 JURONG WEST ST 73" required
+                    autocomplete="street-address"
+                >
+                <small style="color: var(--color-text-light); font-size: 0.875rem; margin-top: 0.5rem; display: block;">
+                    💡 We'll automatically detect your town and typical floor area
+                </small>
+            </div>
             <div class="nav-buttons">
-                <label for="step2" class="next">Next</label>
+                <label for="step2" class="next btn btn-primary">Next Step →</label>
             </div>
         </div>
 
-        <!-- Dropdown Menu for Flat Type -->
+        <!-- Step 2: Flat Type -->
         <div class="step step2">
-            <h2>Flat Type:</h2>
-            <select id="Flat_Type" name="Flat_Type" required>
-                <option value="" disabled selected>Select a flat type</option>
-                {% for label in ["1 Room", "2 Room", "3 Room", "4 Room", "5 Room", "Executive", "Multi-Gen"] %}
-                    <option value="{{ label }}">{{ label }}</option>
-                {% endfor %}
-            </select>
+            <h2>🏢 Flat Configuration</h2>
+            <div class="form-group">
+                <label for="Flat_Type" class="form-label">Select your flat type</label>
+                <select id="Flat_Type" name="Flat_Type" required>
+                    <option value="" disabled selected>Choose flat type...</option>
+                    {% for label in ["1 Room", "2 Room", "3 Room", "4 Room", "5 Room", "Executive", "Multi-Gen"] %}
+                        <option value="{{ label }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
             <div class="nav-buttons">
-                <label for="step1" class="prev">Previous</label>
-                <label for="step3" class="next">Next</label>
+                <label for="step1" class="prev btn btn-secondary">← Previous</label>
+                <label for="step3" class="next btn btn-primary">Next Step →</label>
             </div>
         </div>
 
-        <!-- Input Floor/Storey -->
+        <!-- Step 3: Storey -->
         <div class="step step3">
-            <h2 for="Storey">Storey:</h2>
-            <input id="Storey" name="Storey" type="number" required>
+            <h2>📏 Floor Level</h2>
+            <div class="form-group">
+                <label for="Storey" class="form-label">Which storey is your flat on?</label>
+                <input 
+                    id="Storey" name="Storey" type="number" 
+                    min="1" max="100" step="1"
+                    placeholder="e.g., 12" required
+                >
+            </div>
             <div class="nav-buttons">
-                <label for="step2" class="prev">Previous</label>
-                <label for="step4" class="next">Next</label>
+                <label for="step2" class="prev btn btn-secondary">← Previous</label>
+                <label for="step4" class="next btn btn-primary">Next Step →</label>
             </div>
         </div>
 
-        <!-- Input Floor Area -->
+        <!-- Step 4: Floor Area -->
         <div class="step step4">
-            <h2 for="Floor_Area">Floor Area (sqm):</h2>
-            <input id="Floor_Area" name="Floor_Area" type="number" step="any" required>
+            <h2>📐 Floor Area</h2>
+            <div class="form-group">
+                <label for="Floor_Area" class="form-label">Floor Area (in square meters)</label>
+                <input 
+                    id="Floor_Area" name="Floor_Area" type="number" 
+                    step="0.1" min="20" max="200"
+                    placeholder="e.g., 120" required
+                >
+                <small style="color: var(--color-text-light); font-size: 0.875rem; margin-top: 0.5rem; display: block;">
+                    📊 This should auto-fill based on your address and flat type
+                </small>
+            </div>
             <div class="nav-buttons">
-                <label for="step3" class="prev">Previous</label>
-                <label for="step5" class="next">Next</label>
+                <label for="step3" class="prev btn btn-secondary">← Previous</label>
+                <label for="step5" class="next btn btn-primary">Next Step →</label>
             </div>
         </div>
 
-        <!-- Input Remaining Lease -->
+        <!-- Step 5: Remaining Lease -->
         <div class="step step5">
-            <h2 for="Remaining_Lease">Remaining Lease (Years):</h2>
-            <input id="Remaining_Lease" name="Remaining_Lease" type="number" step="any" required>
+            <h2>⏰ Lease Duration</h2>
+            <div class="form-group">
+                <label for="Remaining_Lease" class="form-label">Remaining lease (in years)</label>
+                <input 
+                    id="Remaining_Lease" name="Remaining_Lease" 
+                    type="number" step="1" min="1" max="100"
+                    placeholder="e.g., 70" required
+                >
+            </div>
             <div class="nav-buttons">
-                <label for="step4" class="prev">Previous</label>
-                <label for="step6" class="next">Next</label>
+                <label for="step4" class="prev btn btn-secondary">← Previous</label>
+                <label for="step6" class="next btn btn-primary">Next Step →</label>
             </div>
         </div>
 
-        <!-- Dropdown Menu for Town -->
+        <!-- Step 6: Town -->
         <div class="step step6">
-            <h2 for="Town">Town:</h2>
-            <select id="Town" name="Town" required>
-                <option value="" disabled selected>Select your Town</option>
-                {% for town in [
-                    "Ang Mo Kio", "Bedok", "Bishan", "Bukit Batok", "Bukit Merah", "Bukit Panjang", "Bukit Timah",
-                    "Central", "Choa Chu Kang", "Clementi", "Geylang", "Hougang", "Jurong East", "Jurong West",
-                    "Kallang/Whampoa", "Marine Parade", "Pasir Ris", "Punggol", "Queenstown", "Sembawang",
-                    "Sengkang", "Serangoon", "Tampines", "Toa Payoh", "Woodlands", "Yishun"
-                ] %}
-                    <option value="{{ town }}">{{ town.title() }}</option>
-                {% endfor %}
-            </select>
+            <h2>🌍 Location</h2>
+            <div class="form-group">
+                <label for="Town" class="form-label">Confirm your town</label>
+                <select id="Town" name="Town" required>
+                    <option value="" disabled selected>Select your town...</option>
+                    {% for town in [
+                        "Ang Mo Kio", "Bedok", "Bishan", "Bukit Batok", "Bukit Merah", "Bukit Panjang", "Bukit Timah",
+                        "Central", "Choa Chu Kang", "Clementi", "Geylang", "Hougang", "Jurong East", "Jurong West",
+                        "Kallang/Whampoa", "Marine Parade", "Pasir Ris", "Punggol", "Queenstown", "Sembawang",
+                        "Sengkang", "Serangoon", "Tampines", "Toa Payoh", "Woodlands", "Yishun"
+                    ] %}
+                        <option value="{{ town.upper() }}">{{ town.title() }}</option>
+                    {% endfor %}
+                </select>
+                <small style="color: var(--color-text-light); font-size: 0.875rem; margin-top: 0.5rem; display: block;">
+                    🎯 This should be auto-detected from your address
+                </small>
+            </div>
             <div class="nav-buttons">
-                <label for="step5" class="prev">Previous</label>
-                <button type="submit" class="next">Predict</button>
+                <label for="step5" class="prev btn btn-secondary">← Previous</label>
+                <button type="submit" class="btn btn-success">🚀 Get Prediction</button>
             </div>
         </div>
-
     </form>
 </div>
-
 {% endblock %}

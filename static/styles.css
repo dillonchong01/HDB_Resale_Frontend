@@ -1,255 +1,631 @@
 /*==============================================================================
-  1. Theme Variables
+  1. Modern Theme Variables
 ==============================================================================*/
 :root {
-    --color-primary: #007BFF;
-    --color-primary-hover: #0056b3;
-    --color-text: #333;
-    --color-background: #f5f5f5;
-    --overlay-bg: rgba(0, 0, 0, 0.5);
-    --font-sans: 'Arial', sans-serif;
-    --spacing-base: 1rem;
-    --radius-base: 0.5rem;
-  }
-  
-  /*==============================================================================
-    2. Global Reset & Base Styles
-  ==============================================================================*/
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
-  
-  html {
-    font-size: 100%; /* 1rem = 16px */
-  }
-  
-  body {
-    /* Layout */
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    position: relative;
-  
-    /* Box-model */
-    margin: 0;
-    padding: var(--spacing-base);
-  
-    /* Typography */
-    font-family: var(--font-sans);
-  
-    /* Visuals */
-    background-image: url('background.png');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-  }
-  
-  /* Ensure headings and paragraphs have consistent text flow */
-  h1, h2, p {
-    text-align: justify;
-    margin-top: 0;
-  }
-  
-  /*==============================================================================
-    3. Overlay Layer
-  ==============================================================================*/
-  .overlay {
-    position: fixed;
-    top: 0; right: 0; bottom: 0; left: 0;
-    background: var(--overlay-bg);
-    z-index: 0;
-  }
-  
-  /*==============================================================================
-    4. Navigation Bar
-  ==============================================================================*/
-  .top-nav {
-    position: absolute;
-    top: 30px; right: 30px;
-    display: flex;
-    gap: 0.5rem;
-    z-index: 10;
-  }
-  
-  .nav-button {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-    text-decoration: none;
-    text-align: center;
-  
-    /* Visuals */
-    background-color: var(--color-primary);
-    color: #fff;
-    border-radius: var(--radius-base);
-    transition: background-color 0.2s ease;
-  }
-  
-  .nav-button:hover {
-    background-color: var(--color-primary-hover);
-  }
-  
-  /*==============================================================================
-    5. Page Title
-  ==============================================================================*/
-  .page-title {
-    position: relative;
-    z-index: 2;
-  
-    /* Typography */
-    color: #fff;
-    font-size: 4rem;
-    text-align: center;
-  
-    /* Box-model */
-    margin-top: 5rem;
-    width: 100%;
-  }
-  
-  /*==============================================================================
-    6. Form Container
-  ==============================================================================*/
-  .form-container {
-    position: relative;
-    width: 70%;
-    margin: 0 auto;
-    padding: 2rem;
-  
-    /* Visuals */
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: var(--radius-base);
-    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
-    z-index: 1;
-  }
-  
-  /*==============================================================================
-    7. Form Elements
-  ==============================================================================*/
-  /* Inputs and selects */
-  input[type="text"],
-  input[type="number"],
-  select {
-    /* Box-model */
-    width: 100%;
-    padding: 0.75rem;
-    margin: 0.5rem 0 1rem 0;
-    border: 1px solid #ccc;
-    border-radius: var(--radius-base);
-  
-    /* Typography */
-    font-size: 1rem;
-  }
-  
-  /* Step headings */
-  .step h2 {
-    margin-bottom: 0.5rem;
-  }
-  
-  /*==============================================================================
-    8. Multi-Step Form Logic
-  ==============================================================================*/
-  .multi-step-form {
-    position: relative;
-  }
-  
-  /* Hide all steps by default */
-  .step {
+  --color-primary: #6366f1;
+  --color-primary-hover: #4f46e5;
+  --color-secondary: #10b981;
+  --color-accent: #f59e0b;
+  --color-text: #1f2937;
+  --color-text-light: #6b7280;
+  --color-text-white: #ffffff;
+  --color-background: #f8fafc;
+  --color-card: rgba(255, 255, 255, 0.95);
+  --color-card-hover: rgba(255, 255, 255, 0.98);
+  --overlay-bg: rgba(15, 23, 42, 0.4);
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 0.75rem;
+  --spacing-base: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+  --radius-sm: 0.375rem;
+  --radius-base: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-base: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/*==============================================================================
+  2. Global Reset & Base Styles
+==============================================================================*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  color: var(--color-text);
+  background-image: url("background.png");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Modern typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0 0 var(--spacing-base) 0;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+p {
+  margin: 0 0 var(--spacing-base) 0;
+  line-height: 1.7;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--color-primary-hover);
+}
+
+/*==============================================================================
+  3. Enhanced Overlay Layer
+==============================================================================*/
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: var(--overlay-bg);
+  backdrop-filter: blur(2px);
+  z-index: 0;
+}
+
+/*==============================================================================
+  4. Modern Navigation Bar
+==============================================================================*/
+.top-nav {
+  position: fixed;
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.1);
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-xl); 
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.nav-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-sm) var(--spacing-base);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  text-align: center;
+  background: var(--gradient-primary);
+  color: var(--color-text-white);
+  border-radius: var(--radius-base);
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.nav-button:hover::before {
+  left: 100%;
+}
+
+.nav-button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/*==============================================================================
+  5. Hero Section & Page Title
+==============================================================================*/
+.hero-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  padding: 4rem 2rem 1rem;
+}
+
+.page-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  color: var(--color-text-white);
+  margin: 0;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: fadeInUp 1s ease-out;
+}
+
+.page-subtitle {
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-top: var(--spacing-base);
+  font-weight: 400;
+  animation: fadeInUp 1s ease-out 0.2s both;
+}
+
+/*==============================================================================
+  6. Modern Container & Cards
+==============================================================================*/
+.main-container {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-base);
+}
+
+.form-container,
+.content-container {
+  background: var(--color-card);
+  backdrop-filter: blur(20px);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin: 0 auto var(--spacing-xl);
+  padding: var(--spacing-lg);
+  max-width: 70%;
+  position: relative;
+  overflow: hidden;
+  animation: slideInUp 0.8s ease-out;
+}
+
+.form-container::before,
+.content-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--gradient-primary);
+}
+
+/*==============================================================================
+  7. Enhanced Form Elements
+==============================================================================*/
+.form-group {
+  margin-bottom: var(--spacing-lg);
+}
+
+.form-label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-sm);
+  position: relative;
+}
+
+.form-label::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 30px;
+  height: 2px;
+  background: var(--gradient-primary);
+  border-radius: 1px;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+  width: 100%;
+  padding: 1rem var(--spacing-base);
+  font-size: 1rem;
+  font-family: var(--font-sans);
+  border: 2px solid #e5e7eb;
+  border-radius: var(--radius-base);
+  background: #ffffff;
+  transition: all 0.3s ease;
+  outline: none;
+  position: relative;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  transform: translateY(-1px);
+}
+
+input[type="text"]:hover,
+input[type="number"]:hover,
+select:hover {
+  border-color: #d1d5db;
+}
+
+/*==============================================================================
+  8. Multi-Step Form Enhancements
+==============================================================================*/
+.multi-step-form {
+  position: relative;
+}
+
+.step {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0;
+  transform: translateY(20px);
+}
+
+#step1:checked ~ .step1,
+#step2:checked ~ .step2,
+#step3:checked ~ .step3,
+#step4:checked ~ .step4,
+#step5:checked ~ .step5,
+#step6:checked ~ .step6 {
+  opacity: 1;
+  max-height: 500px;
+  pointer-events: all;
+  padding: var(--spacing-base) 0;
+  transform: translateY(0);
+}
+
+.step h2 {
+  font-size: 1.5rem;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.step h2::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  background: var(--gradient-primary);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/*==============================================================================
+  9. Modern Button System
+==============================================================================*/
+.nav-buttons {
+  display: flex;
+  gap: var(--spacing-base);
+  margin-top: var(--spacing-lg);
+}
+
+.btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-base) var(--spacing-lg);
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  border: none;
+  border-radius: var(--radius-base);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  min-height: 48px;
+}
+
+.btn-primary {
+  background: var(--gradient-primary);
+  color: var(--color-text-white);
+  box-shadow: var(--shadow-base);
+}
+
+.btn-secondary {
+  background: #f8fafc;
+  color: var(--color-text);
+  border: 2px solid #e5e7eb;
+}
+
+.btn-success {
+  background: var(--gradient-accent);
+  color: var(--color-text-white);
+  box-shadow: var(--shadow-base);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #5a67d8 0%, #667eea 100%);
+}
+
+.btn-secondary:hover {
+  background: #f1f5f9;
+  border-color: var(--color-primary);
+}
+
+.prev,
+.next,
+button[type="submit"] {
+  @extend .btn;
+}
+
+.prev {
+  @extend .btn-secondary;
+}
+
+.next,
+button[type="submit"] {
+  @extend .btn-primary;
+}
+
+button[type="submit"] {
+  @extend .btn-success;
+}
+
+/*==============================================================================
+  10. Results & About Page Styling
+==============================================================================*/
+.result-box {
+  text-align: center;
+  padding: var(--spacing-xl);
+  background: linear-gradient(135deg, #f0fff4 0%, #ecfdf5 100%);
+  border-radius: var(--radius-lg);
+  border: 2px solid #10b981;
+  margin-bottom: var(--spacing-xl);
+}
+
+.result-box h2 {
+  font-size: 1.75rem;
+  margin-bottom: var(--spacing-lg);
+}
+
+.price-highlight {
+  font-size: 2.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: block;
+  margin: var(--spacing-base) 0;
+}
+
+.about-section {
+  margin-bottom: var(--spacing-xl);
+}
+
+.about-section h2 {
+  font-size: 1.5rem;
+  color: var(--color-text);
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.about-section p {
+  text-align: justify;
+}
+
+.feature-list {
+  list-style: none;
+  padding: 0;
+  margin: var(--spacing-base) 0;
+}
+
+.feature-list li {
+  padding: var(--spacing-sm) 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.feature-list li::before {
+  content: "✨";
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+/*==============================================================================
+  11. Animations
+==============================================================================*/
+@keyframes fadeInUp {
+  from {
     opacity: 0;
-    max-height: 0;
-    overflow: hidden;
-    pointer-events: none;
-    transition:
-      opacity 0.5s ease,
-      max-height 0.5s ease,
-      padding 0.5s ease;
-    padding: 0;
+    transform: translateY(30px);
   }
-  
-  /* Show the active step */
-  #step1:checked ~ .step1,
-  #step2:checked ~ .step2,
-  #step3:checked ~ .step3,
-  #step4:checked ~ .step4,
-  #step5:checked ~ .step5,
-  #step6:checked ~ .step6 {
+  to {
     opacity: 1;
-    max-height: 15rem; /* enough for content */
-    pointer-events: all;
-    padding: var(--spacing-base) 0;
+    transform: translateY(0);
   }
-  
-  /* Navigation buttons wrapper */
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.loading {
+  animation: pulse 2s infinite;
+}
+
+/*==============================================================================
+  12. Responsive Design
+==============================================================================*/
+@media (max-width: 768px) {
+  .top-nav {
+    position: static;
+    margin: var(--spacing-base) auto;
+    width: fit-content;
+    top: auto;
+    right: auto;
+  }
+
+  .hero-section {
+    min-height: 30vh;
+    padding: var(--spacing-lg) var(--spacing-base);
+  }
+
+  .page-title {
+    font-size: 2.5rem;
+  }
+
+  .form-container,
+  .content-container {
+    margin: var(--spacing-base);
+    padding: var(--spacing-lg);
+    max-width: none;
+  }
+
   .nav-buttons {
-    display: flex;
-    gap: 1rem;
-    justify-content: space-between;
+    flex-direction: column;
   }
-  
-  /* Prev/Next buttons */
-  .nav-buttons .prev,
-  .nav-buttons .next,
-  button {
-    flex: 1;
-    padding: 0.75rem;
+
+  .btn {
+    flex: none;
+  }
+
+  .feature-list li {
     font-size: 0.9rem;
-    border: none;
-    border-radius: var(--radius-base);
-    cursor: pointer;
-    text-align: center;
-  
-    /* Visuals */
-    background-color: var(--color-primary);
-    color: #fff;
-    transition: background-color 0.3s ease;
   }
-  
-  .nav-buttons .prev:hover,
-  .nav-buttons .next:hover,
-  button:hover {
-    background-color: var(--color-primary-hover);
-  }
-  
-  /*==============================================================================
-    9. Responsive Adjustments
-  ==============================================================================*/
-  @media (max-width: 600px) {
-    .form-container {
-      width: 90%;
-      padding: var(--spacing-base);
-    }
 
-    .top-nav {
-      position: static;
-      margin-top: 1rem;
-      display: flex;
-      width: 100%;
-      justify-content: center; 
-    }
-  
-    .page-title {
-      font-size: 2rem;
-      margin-top: 1rem;
-    }
-  
-    input[type="text"],
-    input[type="number"],
-    select {
-      padding: 0.5rem;
-      font-size: 1rem;
-    }
-  
-    .nav-buttons .prev,
-    .nav-buttons .next,
-    button {
-      padding: 0.75rem;
-    }
-
-    .step h2,
-    .result-box h2 {
-      font-size: 0.9rem;
-    }
+  .price-highlight {
+    font-size: 2rem;
   }
-  
+}
+
+@media (max-width: 480px) {
+  .form-container,
+  .content-container {
+    padding: var(--spacing-base);
+    margin: var(--spacing-sm);
+  }
+
+  .page-title {
+    font-size: 2rem;
+  }
+
+  .hero-section {
+    padding: var(--spacing-base);
+  }
+}
+
+/*==============================================================================
+  13. Utility Classes
+==============================================================================*/
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+
+.mb-0 {
+  margin-bottom: 0;
+}
+.mb-1 {
+  margin-bottom: var(--spacing-xs);
+}
+.mb-2 {
+  margin-bottom: var(--spacing-sm);
+}
+.mb-3 {
+  margin-bottom: var(--spacing-base);
+}
+.mb-4 {
+  margin-bottom: var(--spacing-lg);
+}
+
+.mt-0 {
+  margin-top: 0;
+}
+.mt-1 {
+  margin-top: var(--spacing-xs);
+}
+.mt-2 {
+  margin-top: var(--spacing-sm);
+}
+.mt-3 {
+  margin-top: var(--spacing-base);
+}
+.mt-4 {
+  margin-top: var(--spacing-lg);
+}
+
+.hidden {
+  display: none;
+}
+.visible {
+  display: block;
+}

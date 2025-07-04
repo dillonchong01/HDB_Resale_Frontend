@@ -1,17 +1,42 @@
 {% extends "base.html" %}
 
-{% block title %}Predicted Resale Price{% endblock %}
+{% block title %}Predicted Resale Price - HDB Value Predictor{% endblock %}
 
 {% block content %}
-<h1 class="page-title">Predicted Resale Price</h1>
+<div class="hero-section">
+    <h1 class="page-title">Your Prediction Results</h1>
+    <p class="page-subtitle">Based on current market data and AI analysis</p>
+</div>
 
-<div class="form-container">
+<div class="content-container">
     <div class="result-box">
-        <h2>
-            <span style="color: black;">Predicted Resale Value: </span>
-            <span style="color: #49cb70;">{{ price | format_price }}</span>
+        <h2 style="color: var(--color-text); margin-bottom: var(--spacing-lg);">
+            🎯 Estimated Resale Value
         </h2>
-        <button onclick="window.location.href='/'">Go Back</button>
+        <div class="price-highlight">
+            {{ price | format_price }}
+        </div>
+        <p style="color: var(--color-text-light); font-size: 0.9rem; margin-top: var(--spacing-base);">
+            💡 This prediction is based on recent market transactions, location factors, and property characteristics
+        </p>
+        
+        <div style="margin-top: var(--spacing-xl); display: flex; gap: var(--spacing-base); flex-wrap: wrap;">
+            <button onclick="window.location.href='/'" class="btn btn-primary" style="flex: 1; min-width: 200px;">
+                🔄 New Prediction
+            </button>
+            <button onclick="window.location.href='/about'" class="btn btn-secondary" style="flex: 1; min-width: 200px;">
+                📊 Learn More
+            </button>
+        </div>
+    </div>
+
+    <div style="background: #f8fafc; padding: var(--spacing-lg); border-radius: var(--radius-base); margin-top: var(--spacing-lg); border-left: 4px solid var(--color-primary);">
+        <h3 style="margin: 0 0 var(--spacing-sm) 0; color: var(--color-text); font-size: 1.1rem;">
+            📈 Market Insights
+        </h3>
+        <p style="margin: 0; color: var(--color-text-light); font-size: 0.9rem; line-height: 1.6;">
+            Our AI model considers factors like proximity to MRT stations, shopping malls, schools, estate maturity, and current market trends to provide you with the most accurate prediction possible.
+        </p>
     </div>
 </div>
 {% endblock %}

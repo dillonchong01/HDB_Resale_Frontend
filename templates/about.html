@@ -1,35 +1,70 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1 class="page-title">About Resale Value Predictor</h1>
+<div class="hero-section">
+    <h1 class="page-title">About Our Predictor</h1>
+    <p class="page-subtitle">Powered by AI and real market data</p>
+</div>
 
-  <div class="form-container">
-        <h2>About This Project</h2>
+<div class="content-container">
+    <div class="about-section">
+        <h2>🚀 What We Do</h2>
         <p>
             Curious what your HDB flat is really worth? Whether you're selling for top dollar or hunting for a fair deal,
-            Resale Value Predictor delivers instant, data‑backed estimates based on your flat's specifications
+            our Resale Value Predictor delivers instant, data‑backed estimates based on your flat's specifications.
         </p>
+    </div>
 
-        <h2 style="margin-top: 30px;">How It Works</h2>
-        <p>🔍 We source every HDB resale transaction since 2017 from the
-            <a href="https://data.gov.sg/datasets/d_8b84c4ee58e3cfc0ece0d773c8ca6abc/view" target="_blank" rel="noopener noreferrer">Housing and Development Board</a>
-        </p>
-        <p>🤖 Our LightGBM regression model uncovers the hidden factors that truly drive prices</p>
-        <p>🔄 Each week, our automated pipeline pulls in new sales data and retrains the model — so your valuations stay sharp</p>
-        <p>☁️ Your flat's details are forwarded to our REST API hosted on Heroku to obtain resale price predictions</p>
-        <p>🔗 Developers can also integrate directly: call our API <a href="http://hdb-resale-pricing-e5d49496399a.herokuapp.com/docs" target="_blank" rel="noopener noreferrer">here</a></p>
-    
-        <h2 style="margin-top: 30px;">Parameters Used for Modelling</h2>
-        <ul>
+    <div class="about-section">
+        <h2>🔬 How It Works</h2>
+        <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: var(--spacing-sm); border-radius: var(--radius-base); margin: var(--spacing-base) 0;">
+            <p style="margin: 0;"><strong>🔍 Data Collection:</strong> We source every HDB resale transaction since 2017 from the
+                <a href="https://data.gov.sg/datasets/d_8b84c4ee58e3cfc0ece0d773c8ca6abc/view" target="_blank" rel="noopener noreferrer" style="font-weight: 600;">Housing and Development Board Database</a>
+            </p>
+        </div>
+        
+        <div style="background: linear-gradient(135deg, #fefce8 0%, #fef3c7 100%); padding: var(--spacing-sm); border-radius: var(--radius-base); margin: var(--spacing-base) 0;">
+            <p style="margin: 0;"><strong>🤖 AI Processing:</strong> Our LightGBM regression model uncovers the hidden factors that truly drive prices</p>
+        </div>
+        
+        <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); padding: var(--spacing-sm); border-radius: var(--radius-base); margin: var(--spacing-base) 0;">
+            <p style="margin: 0;"><strong>🔄 Continuous Updates:</strong> Each week, our automated pipeline pulls in new sales data and retrains the model — so your valuations stay sharp</p>
+        </div>
+        
+        <div style="background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%); padding: var(--spacing-sm); border-radius: var(--radius-base); margin: var(--spacing-base) 0;">
+            <p style="margin: 0;"><strong>☁️ Cloud Processing:</strong> Your flat's details are forwarded to our REST API hosted on Heroku to obtain resale price predictions</p>
+        </div>
+        
+        <div style="background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); padding: var(--spacing-sm); border-radius: var(--radius-base); margin: var(--spacing-base) 0;">
+            <p style="margin: 0;"><strong>🔗 Developer Access:</strong> Developers can also integrate directly: call our API 
+                <a href="http://hdb-resale-pricing-e5d49496399a.herokuapp.com/docs" target="_blank" rel="noopener noreferrer" style="font-weight: 600;">here</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="about-section">
+        <h2>📊 Key Factors We Analyze</h2>
+        <ul class="feature-list">
             <li>🏠 Flat Type</li>
-            <li>🏢 Storey</li>
+            <li>🏢 Storey Level</li>
             <li>📏 Floor Area</li>
             <li>⏳ Remaining Lease</li>
             <li>🚶‍♂️ Walking Distance to Nearest MRT</li>
-            <li>🛍️ Walking Distance to Nearest Mall</li>
-            <li>🏫 Within 1km of Oversubscribed Primary School</li>
-            <li>📈 Resale Price Index (RPI)</li>
-            <li>🌳 Maturity of Estate</li>
+            <li>🛍️ Proximity to Shopping Malls</li>
+            <li>🏫 Distance to Primary Schools</li>
+            <li>📈 Current Resale Price Index</li>
+            <li>🌳 Estate Maturity</li>
         </ul>
     </div>
+
+    <div style="background: linear-gradient(135deg, #1e293b 0%, #334155 100%); color: white; padding: var(--spacing-xl); border-radius: var(--radius-lg); margin-top: var(--spacing-xl); text-align: center;">
+        <h3 style="color: white; margin-bottom: var(--spacing-base);">🎯 Ready to Get Started?</h3>
+        <p style="margin-bottom: var(--spacing-lg); opacity: 0.9;">
+            Get your instant HDB resale price prediction in just a few clicks
+        </p>
+        <a href="{{ url_for('index') }}" class="btn btn-primary" style="display: inline-block; text-decoration: none;">
+            🚀 Start Prediction
+        </a>
+    </div>
+</div>
 {% endblock %}

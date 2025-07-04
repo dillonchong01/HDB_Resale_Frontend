@@ -21,10 +21,14 @@ class HDBLookupService:
     def lookup(self, address: str, flat_type: str):
         if not address or flat_type not in self._flat_map:
             return None, None
+        
+        # Convert Avenue to Ave, Street to St, Remove Blk/Block
+        address = address.lower().replace("avenue", "AVE").replace("street", "ST")
+        address = address.replace("blk", "").replace("block", "").strip().upper()
 
         # Filter with Address
         df = self._df
-        filtered = df.filter(pl.col("Address").str.to_uppercase() == address.upper())
+        filtered = df.filter(pl.col("Address").str.to_uppercase() == address)
         if filtered.is_empty():
             return None, None
 

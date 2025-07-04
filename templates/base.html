@@ -4,46 +4,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Resale Value Predictor{% endblock %}</title>
+    <title>{% block title %}HDB Resale Value Predictor{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <meta name="description" content="Get accurate HDB resale price predictions using advanced machine learning models and real-time market data.">
 </head>
 
 <body>
     <div class="overlay"></div>
+    
     <nav class="top-nav">
-        <a href="{{ url_for('index') }}" class="nav-button">Home</a>
-        <a href="{{ url_for('about') }}" class="nav-button">About Me / API</a>
+        <a href="{{ url_for('index') }}" class="nav-button">
+            🏠 Home
+        </a>
+        <a href="{{ url_for('about') }}" class="nav-button">
+            📊 About & API
+        </a>
     </nav>
 
-    {% block content %}{% endblock %}
+    <main class="main-container">
+        {% block content %}{% endblock %}
+    </main>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-          const addressEl = document.getElementById('Address');
-          const flatTypeEl = document.getElementById('Flat_Type');
-          const townEl    = document.getElementById('Town');
-          const areaEl    = document.getElementById('Floor_Area');
-        
-          async function getAddressInfo() {
-            const address  = addressEl.value;
-            const flatType = flatTypeEl.value;
-            if (!address || !flatType) return;
-        
-            try {
-              const resp = await fetch(
-                `/get_address_info?address=${encodeURIComponent(address)}&flat_type=${encodeURIComponent(flatType)}`
-              );
-              const data = await resp.json();
-              if (data.town)       townEl.value = data.town;
-              if (data.floor_area) areaEl.value = data.floor_area;
-            } catch (err) {
-              console.error('Could not fetch address info', err);
+    document.addEventListener("DOMContentLoaded", function () {
+        const addressInput = document.getElementById('Address');
+        const flatTypeSelect = document.getElementById('Flat_Type');
+        const townSelect = document.getElementById('Town');
+        const floorAreaInput = document.getElementById('Floor_Area');
+
+        function getAddressInfo() {
+            const address = addressInput?.value;
+            const flatType = flatTypeSelect?.value;
+
+            if (address && flatType) {
+                fetch(`/get_address_info?address=${encodeURIComponent(address)}&flat_type=${encodeURIComponent(flatType)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.town && data.floor_area !== null && !isNaN(data.floor_area)) {
+                            townSelect.value = data.town.toUpperCase();
+                            floorAreaInput.value = data.floor_area;
+                        }
+                    })
+                    .catch(() => {
+                    });
             }
-          }
-        
-          addressEl.addEventListener('input', getAddressInfo);
-          flatTypeEl.addEventListener('change', getAddressInfo);
+        }
+
+        const allSteps = document.querySelectorAll('input[name="step"]');
+        allSteps.forEach(radio => {
+            radio.addEventListener('change', () => {
+                const step = document.querySelector('input[name="step"]:checked')?.id;
+                if (step === 'step3') {
+                    getAddressInfo();
+                }
+            });
         });
+    });
     </script>
 
 </body>
